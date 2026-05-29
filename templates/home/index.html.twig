@@ -1,0 +1,365 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LUMI — Tu n'es pas seul·e
+{% endblock %}
+
+{% block body %}
+
+
+	<div
+		class="min-h-screen bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] pt-6">
+
+		{# NAVBAR #}
+		<nav class="flex items-center justify-between px-12 py-5 bg-white shadow-sm rounded-3xl max-w-7xl mx-auto mb-8">
+			<div class="flex items-center gap-2">
+				<img src="{{ asset('images/echo.png') }}" alt="LUMI" class="w-10 h-10 object-contain">
+				<span class="font-poppins font-bold text-[#4A157D] text-xl italic">LUMI</span>
+			</div>
+			<div class="hidden md:flex items-center gap-8">
+				<a href="#" class="text-[#4A157D] hover:opacity-80 font-semibold">Parler à Echo</a>
+				<a href="#" class="text-[#4A157D] hover:opacity-80 font-semibold">Mes points</a>
+				<a href="{{ path('app_login') }}" class="bg-[#A855F7]/80 text-white px-6 py-2 rounded-full font-semibold hover:opacity-90 transition shadow-sm">Se connecter</a>
+			</div>
+		</nav>
+
+		{# HERO #}
+		<section class="px-8 py-12 md:py-20">
+			<div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+				<div class="flex-1">
+					<div class="inline-flex items-center gap-2 bg-white shadow-sm border border-gray-100 rounded-full px-5 py-2 text-sm font-medium text-gray-700 mb-8">
+						🔒
+						<span class="italic font-bold">100% anonyme</span>
+						· Gratuit · Sécurisé
+					</div>
+					<h1 class="font-poppins font-bold text-6xl mb-6">
+						<span class="text-[#20736D]">Tu n'es pas</span>
+						<span class="text-[#4A157D]">
+							seul·e.</span>
+					</h1>
+					<p class="text-xl text-[#000000] opacity-80 leading-relaxed mb-8 max-w-lg">
+						<span class="text-[#4A157D] font-bold">ECHO</span>
+						<span class="text-[#CB30E0] font-bold">
+							t'écoute</span>
+						sans te juger, à n'importe quelle heure.
+						<span class="text-[#20736D] font-bold">
+							Parle,</span>
+						<span class="text-[#FF8D28] font-bold">
+							signale,</span>
+						<span class="text-[#CB30E0] font-bold">
+							reprends confiance.</span>
+					</p>
+					<div class="flex flex-wrap gap-4 mt-8 mb-6">
+						<a href="#" class="bg-[#A855F7]/80 text-white px-8 py-3 rounded-full font-bold flex items-center gap-2 hover:opacity-90 transition shadow-md">
+							💬 Parler à ECHO
+						</a>
+						<a href="#" class="border-2 border-[#20736D] text-[#20736D] bg-white/40 px-8 py-3 rounded-full font-bold hover:bg-white transition shadow-sm">
+							Faire un signalement
+						</a>
+					</div>
+					<div class="flex gap-6 mt-6 text-sm font-semibold opacity-90">
+						<span>🔒 Anonyme</span>
+						<span>🛡️ Sécurisé</span>
+						<span>💜 Sans jugement</span>
+					</div>
+				</div>
+
+				{# ECHO MASCOTTE avec badges flottants #}
+				<div class="flex-1 flex justify-center items-center">
+					<div
+						class="relative w-72 h-72 md:w-[480px] md:h-[480px]">
+						<img src="{{ asset('images/echo.png') }}" alt="ECHO mascotte" class="w-full h-full object-contain animate-float relative z-10"/>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{# STATS #}
+		<section class="bg-[#CCAFE7]/30 py-8 px-8">
+			<div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center text-[#4A157D]">
+				<div>
+					<div class="font-poppins font-bold text-3xl">12 000+</div>
+					<div class="text-sm font-semibold mt-1">élèves aidés</div>
+				</div>
+				<div>
+					<div class="font-poppins font-bold text-3xl">98%</div>
+					<div class="text-sm font-semibold mt-1">se sentent écoutés</div>
+				</div>
+				<div>
+					<div class="font-poppins font-bold text-3xl">24h/24</div>
+					<div class="text-sm font-semibold mt-1">Disponible</div>
+				</div>
+				<div>
+					<div class="font-poppins font-bold text-3xl">RGPD</div>
+					<div class="text-sm font-semibold mt-1">Conforme</div>
+				</div>
+			</div>
+		</section>
+
+		{# COMMENT CA MARCHE #}
+		<section class="py-20 px-8">
+			<div class="max-w-7xl mx-auto">
+				<h2 class="font-poppins font-bold text-5xl text-center text-gray-700 mb-16">Comment ça marche ?</h2>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+					<div class="relative bg-white rounded-3xl p-8 shadow-sm pt-10">
+						<div class="absolute -top-4 left-6 w-9 h-9 bg-[#A855F7] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md">1</div>
+						<div class="text-4xl mb-4">🚪</div>
+						<h3 class="font-poppins font-bold text-base mb-2">Tu choisis comment arriver</h3>
+						<p class="text-gray-500 text-sm leading-relaxed">Reste anonyme ou crée un compte, c'est toi qui décides.</p>
+					</div>
+
+					<div class="relative bg-white rounded-3xl p-8 shadow-sm pt-10">
+						<div class="absolute -top-4 left-6 w-9 h-9 bg-[#A855F7] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md">2</div>
+						<div class="text-4xl mb-4">💬</div>
+						<h3 class="font-poppins font-bold text-base mb-2">Tu parles à ECHO</h3>
+						<p class="text-gray-500 text-sm leading-relaxed">Notre IA empathique t'écoute, te comprend et t'accompagne.</p>
+					</div>
+
+					<div class="relative bg-white rounded-3xl p-8 shadow-sm pt-10">
+						<div class="absolute -top-4 left-6 w-9 h-9 bg-[#A855F7] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md">3</div>
+						<div class="text-4xl mb-4">📋</div>
+						<h3 class="font-poppins font-bold text-base mb-2">ECHO agit pour toi</h3>
+						<p class="text-gray-500 text-sm leading-relaxed">Un rapport confidentiel est généré pour alerter les bonnes personnes.</p>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+		{# RENCONTRE LUMI #}
+		<section class="py-16 px-6 bg-[#F5F2FA]">
+			<div class="max-w-[1280px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+
+				<div class="max-w-[550px]">
+					<h2 class="font-poppins font-bold text-[52px] leading-[1.05] text-[#4B4B57]">
+						Rencontre
+						<span class="text-[#5B21B6]">LUMI</span>, ton allié
+					</h2>
+					<h2 class="font-poppins font-bold text-[52px] leading-[1.05] mb-6">
+						<span class="text-[#1F7A73]">discret</span>
+						<span class="text-[#5B21B6]">
+							💜</span>
+					</h2>
+
+					<p class="text-[20px] leading-[1.35] text-[#7C5BA6] mb-8">
+						ECHO est une intelligence artificielle conçue pour écouter, comprendre et accompagner les élèves victimes de harcèlement scolaire. Disponible 24h/24, sans jugement.
+					</p>
+
+					<div class="flex flex-wrap gap-3 max-w-[550px]">
+						<span class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold whitespace-nowrap">
+							Détecte le harcèlement
+						</span>
+						<span class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold whitespace-nowrap">
+							Jamais de jugement
+						</span>
+						<span class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold whitespace-nowrap">
+							Disponible la nuit
+						</span>
+						<div class="w-full">
+							<span class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold inline-block whitespace-nowrap">
+								Rapport anonyme auto
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex justify-center shrink-0 lg:w-1/2">
+					<div class="w-[360px] h-[640px] max-h-[75vh] rounded-[42px] border-4 border-[#5B21B6] bg-white shadow-[0_12px_40px_rgba(91,33,182,0.2)] overflow-hidden flex flex-col">
+						<img src="{{ asset('images/MOBILE-ECHO.png') }}" alt="ECHO Mobile" class="w-full h-full object-cover object-top">
+					</div>
+				</div>
+
+			</div>
+		</section>
+
+
+		{# chaque pas compte #}
+		<section class="relative py-24 px-8 overflow-hidden" style="background: linear-gradient(180deg, rgba(255,228,144, 0.13) 0%, /* #FFE490 à 13% */ rgba(255,223,122, 0.13) 50%, /* #FFDF7A à 13% */ rgba(255,141,40,  0.13) 100% /* #FF8D28 à 13% */);	background-color: #ffffff;">
+				
+				  
+				
+
+			<div class="max-w-7xl mx-auto">
+				<h2 class="font-poppins font-bold text-5xl text-center text-gray-800 mb-3">Chaque pas compte 💛</h2>
+				<p class="text-center text-gray-500 gap-4 text-lg mb-14 max-w-xl mx-auto">
+					Gagne des points de courage et débloque des badges en prenant soin de toi. Chaque action compte, chaque pas est une victoire.
+				</p>
+
+				<div
+					class="flex flex-col md:flex-row items-center justify-center gap-16">
+
+					{# Cerchio punti courage con glow #}
+					<div class="flex flex-col items-center shrink-0">
+						<div
+							class="relative w-48 h-48">
+							{# Glow sfumato sotto #}
+							<div class="absolute inset-4 rounded-full" style="background: radial-gradient(circle, rgba(255,141,40,0.18) 0%, transparent 70%);"></div>
+							{# SVG arco arancione #}
+							<svg
+								class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 180 180">
+								{# Traccia di sfondo #}
+								<circle
+								cx="90" cy="90" r="76" fill="none" stroke="rgba(255,141,40,0.15)" stroke-width="13"/>
+								{# Arco principale #FF8D28, circa 3/4 del cerchio #}
+								<circle cx="90" cy="90" r="76" fill="none" stroke="#FF8D28" stroke-width="13" stroke-dasharray="478" stroke-dashoffset="120" stroke-linecap="round"/>
+							</svg>
+							{# Testo centrale #}
+							<div class="absolute inset-0 flex flex-col items-center justify-center">
+								<div class="font-poppins font-bold text-4xl text-gray-800 leading-none">120</div>
+								<div class="text-xs text-gray-500 font-semibold mt-1">pts Courage</div>
+							</div>
+						</div>
+					</div>
+
+					{# Griglia 2×2 badge — carte bianche con icone images #}
+					<div class="grid grid-cols-2 gap-5" style="min-width: 380px;">
+
+						<div class="bg-white rounded-2xl p-5 shadow-sm" style="min-height:100px;">
+							<img src="{{ asset('images/etoile.png') }}" alt="Premier Pas" class="w-9 h-9 object-contain mb-3">
+							<div class="font-poppins font-bold text-sm text-gray-800">Premier Pas</div>
+							<div class="text-xs text-gray-400 mt-0.5">Tu as osé parler</div>
+						</div>
+
+						<div class="bg-white rounded-2xl p-5 shadow-sm" style="min-height:100px;">
+							<img src="{{ asset('images/etoile.png') }}" alt="Courage" class="w-9 h-9 object-contain mb-3">
+							<div class="font-poppins font-bold text-sm text-gray-800">Courage</div>
+							<div class="text-xs text-gray-400 mt-0.5">Tu affrontes tes peurs</div>
+						</div>
+
+						<div class="bg-white rounded-2xl p-5 shadow-sm" style="min-height:100px;">
+							<img src="{{ asset('images/etoile.png') }}" alt="Pas Seul·e" class="w-9 h-9 object-contain mb-3">
+							<div class="font-poppins font-bold text-sm text-gray-800">Pas Seul·e</div>
+							<div class="text-xs text-gray-400 mt-0.5">Tu as demandé de l'aide</div>
+						</div>
+
+						<div class="bg-white rounded-2xl p-5 shadow-sm" style="min-height:100px;">
+							<img src="{{ asset('images/etoile.png') }}" alt="Voix Libre" class="w-9 h-9 object-contain mb-3">
+							<div class="font-poppins font-bold text-sm text-gray-800">Voix Libre</div>
+							<div class="text-xs text-gray-400 mt-0.5">Tu t'es exprimé·e</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+		{# BADGES #}
+		<section class="py-20 px-8">
+			<div class="max-w-7xl mx-auto">
+				<h2 class="font-poppins font-bold text-4xl text-center text-[#4A157D] mb-4">Chaque pas compte 💛</h2>
+				<p class="text-center text-gray-500 mb-12">Gagne des points di coraggio e blocca i badge prendendoti cura di te.</p>
+				<div class="flex flex-col md:flex-row items-center gap-12">
+					<div class="flex flex-col items-center">
+						<div class="w-40 h-40 rounded-full border-8 border-[#FF8D28] flex items-center justify-center bg-white shadow-sm">
+							<div class="text-center">
+								<div class="font-poppins font-bold text-3xl text-[#4A157D]">120</div>
+								<div class="text-sm text-gray-500">pts Courage</div>
+							</div>
+						</div>
+					</div>
+					<div class="grid grid-cols-2 gap-4 flex-1">
+						<div class="bg-white rounded-2xl p-4 shadow-sm border border-light">
+							<div class="text-2xl mb-1">⭐</div>
+							<div class="font-semibold text-sm">Premier Pas</div>
+							<div class="text-xs text-gray-400">Tu as osé parler</div>
+						</div>
+						<div class="bg-white rounded-2xl p-4 shadow-sm border border-light">
+							<div class="text-2xl mb-1">💪</div>
+							<div class="font-semibold text-sm">Courage</div>
+							<div class="text-xs text-gray-400">Tu affrontes tes peurs</div>
+						</div>
+						<div class="bg-white rounded-2xl p-4 shadow-sm border border-light">
+							<div class="text-2xl mb-1">🧡</div>
+							<div class="font-semibold text-sm">Pas Seul·e</div>
+							<div class="text-xs text-gray-400">Tu as demandé de l'aide</div>
+						</div>
+						<div class="bg-white rounded-2xl p-4 shadow-sm border border-light">
+							<div class="text-2xl mb-1">🎤</div>
+							<div class="font-semibold text-sm">Voix Libre</div>
+							<div class="text-xs text-gray-400">Tu t'es exprimé·e</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{# SECURITE #}
+		<section class="py-20 px-8">
+			<div class="max-w-7xl mx-auto">
+				<h2 class="font-poppins font-bold text-4xl text-center text-[#4A157D] mb-4">Ta sécurité avant tout</h2>
+				<p class="text-center text-gray-500 mb-12">LUMI a été conçu avec la sécurité et la confidentialité au cœur de chaque décision.</p>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+					<div class="bg-white rounded-2xl p-8 shadow-sm border border-light">
+						<div class="text-3xl mb-4">🔒</div>
+						<h3 class="font-poppins font-semibold text-lg mb-2">Anonymat garanti</h3>
+						<p class="text-gray-500 text-sm">Tes données personnelles sont protégées. Personne ne peut savoir qui tu es sauf si tu le décides.</p>
+					</div>
+					<div class="bg-white rounded-2xl p-8 shadow-sm border border-light">
+						<div class="text-3xl mb-4">⚖️</div>
+						<h3 class="font-poppins font-semibold text-lg mb-2">Cadre légal français</h3>
+						<p class="text-gray-500 text-sm">LUMI respecte la législation française sur la protection des mineurs et le RGPD.</p>
+					</div>
+					<div class="bg-white rounded-2xl p-8 shadow-sm border border-light">
+						<div class="text-3xl mb-4">🚨</div>
+						<h3 class="font-poppins font-semibold text-lg mb-2">Alerte en cas de danger</h3>
+						<p class="text-gray-500 text-sm">Si tu es en danger immédiat, ECHO peut alerter les personnes compétentes pour te protéger.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{# CTA FINAL #}
+		<section class="py-20 px-8 text-center">
+			<h2 class="font-poppins font-bold text-4xl text-[#4A157D] mb-4">Prêt·e à reprendre ta voix ?</h2>
+			<p class="text-gray-600 mb-8">Que tu veuilles simplement parler ou faire un signalement, ECHO est là pour toi. Tu n'as pas besoin de donner ton nom.</p>
+			<div class="flex justify-center gap-4 flex-wrap">
+				<a href="#" class="bg-[#CB30E0] text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md">
+					Parler à ECHO 💜
+				</a>
+				<a href="#" class="border-2 border-[#20736D] text-[#20736D] bg-white/50 px-8 py-3 rounded-full font-semibold hover:bg-white transition">
+					Rester anonyme
+				</a>
+			</div>
+		</section>
+
+		{# FOOTER #}
+		<footer class="bg-[#4A157D] py-12 px-8">
+			<div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-white">
+				<div>
+					<div class="font-poppins font-bold text-xl mb-2 italic">LUMI</div>
+					<p class="text-sm opacity-70">VOIXIA donne une voix à ceux qui n'osent pas encore parler.</p>
+				</div>
+				<div>
+					<div class="font-semibold mb-4">Plateforme</div>
+					<ul class="text-sm opacity-70 space-y-2">
+						<li>Comment ça marche</li>
+						<li>Parler à ECHO</li>
+						<li>Signalement</li>
+						<li>FAQ</li>
+					</ul>
+				</div>
+				<div>
+					<div class="font-semibold mb-4">Établissements</div>
+					<ul class="text-sm opacity-70 space-y-2">
+						<li>Présentation</li>
+						<li>Demander une démo</li>
+						<li>Tarifs</li>
+						<li>Ressources</li>
+					</ul>
+				</div>
+				<div>
+					<div class="font-semibold mb-4">Légal</div>
+					<ul class="text-sm opacity-70 space-y-2">
+						<li>Mentions légales</li>
+						<li>Politique de confidentialité</li>
+						<li>CGU</li>
+						<li>RGPD</li>
+					</ul>
+				</div>
+			</div>
+		</footer>
+
+	</div>
+
+{% endblock %}

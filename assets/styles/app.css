@@ -1,3 +1,38 @@
-body {
-    background-color: skyblue;
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #4A157D;
+    --color-primary-light: #A855F7;
+    --color-secondary: #CB30E0;
+    --color-mint: #20736D;
+    --color-bg: #F8F9FA;
+    --color-bg2: #EFF7FF;
+    --color-light: #DCE8FF;
+    --color-orange: #FF8D28;
+    --color-gray: #A6A6A6;
+
+    --font-poppins: 'Poppins', sans-serif;
+    --font-inter: 'Inter', sans-serif;
+}
+
+@keyframes lumi-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-25px); }
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: lumi-float 4s ease-in-out infinite;
+  }
+  .star {
+    animation: star-twinkle 2s ease-in-out infinite;
+  }
+  .star:nth-child(2) { animation-delay: 0.5s; }
+  .star:nth-child(3) { animation-delay: 0.5s; }
+  .star:nth-child(4) { animation-delay: 1.5s; }
 }
