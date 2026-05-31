@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260527125405 extends AbstractMigration
+final class Version20260529150228 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -43,31 +43,11 @@ final class Version20260527125405 extends AbstractMigration
         $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649FF631228 FOREIGN KEY (etablissement_id) REFERENCES etablissement (id)');
         $this->addSql('ALTER TABLE user_badge ADD CONSTRAINT FK_1C32B345A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE user_badge ADD CONSTRAINT FK_1C32B345F7A2C2FC FOREIGN KEY (badge_id) REFERENCES badge (id)');
-        $this->addSql('DROP TABLE alertes');
-        $this->addSql('DROP TABLE badges');
-        $this->addSql('DROP TABLE conversations');
-        $this->addSql('DROP TABLE courage_points');
-        $this->addSql('DROP TABLE etablissements');
-        $this->addSql('DROP TABLE heatmap_zones');
-        $this->addSql('DROP TABLE messages');
-        $this->addSql('DROP TABLE signalements');
-        $this->addSql('DROP TABLE user_badges');
-        $this->addSql('DROP TABLE users');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE alertes (id INT UNSIGNED AUTO_INCREMENT NOT NULL, signalement_id INT UNSIGNED NOT NULL, severite ENUM(\'faible\', \'moderee\', \'critique\') CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, statut ENUM(\'nouvelle\', \'vue\', \'traitee\') CHARACTER SET utf8mb4 DEFAULT \'nouvelle\' COLLATE `utf8mb4_unicode_ci`, note_interne TEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, treated_by INT UNSIGNED DEFAULT NULL, treated_at DATETIME DEFAULT NULL, INDEX signalement_id (signalement_id), INDEX treated_by (treated_by), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
-        $this->addSql('CREATE TABLE badges (id INT UNSIGNED AUTO_INCREMENT NOT NULL, nom VARCHAR(100) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, description VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, icone VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, points_requis INT DEFAULT 0, condition_type ENUM(\'points\', \'signalement\', \'conversation\', \'streak\') CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
-        $this->addSql('CREATE TABLE conversations (id INT UNSIGNED AUTO_INCREMENT NOT NULL, user_id INT UNSIGNED DEFAULT NULL, session_token VARCHAR(64) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, signalement_id INT UNSIGNED DEFAULT NULL, started_at DATETIME DEFAULT CURRENT_TIMESTAMP, ended_at DATETIME DEFAULT NULL, INDEX signalement_id (signalement_id), INDEX user_id (user_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
-        $this->addSql('CREATE TABLE courage_points (id INT UNSIGNED AUTO_INCREMENT NOT NULL, user_id INT UNSIGNED NOT NULL, points INT NOT NULL, raison ENUM(\'conversation\', \'signalement\', \'badge\', \'streak\', \'bonus\') CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, INDEX user_id (user_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
-        $this->addSql('CREATE TABLE etablissements (id INT UNSIGNED AUTO_INCREMENT NOT NULL, nom VARCHAR(150) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, code_uai VARCHAR(20) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, adresse TEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, email_contact VARCHAR(150) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, UNIQUE INDEX code_uai (code_uai), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
-        $this->addSql('CREATE TABLE heatmap_zones (id INT UNSIGNED AUTO_INCREMENT NOT NULL, etablissement_id INT UNSIGNED NOT NULL, nom_zone VARCHAR(100) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, position_x INT DEFAULT NULL, position_y INT DEFAULT NULL, incident_count INT DEFAULT 0, last_updated DATETIME DEFAULT NULL, INDEX etablissement_id (etablissement_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
-        $this->addSql('CREATE TABLE messages (id INT UNSIGNED AUTO_INCREMENT NOT NULL, conversation_id INT UNSIGNED NOT NULL, role ENUM(\'user\', \'assistant\') CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, content TEXT CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, INDEX conversation_id (conversation_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
-        $this->addSql('CREATE TABLE signalements (id INT UNSIGNED AUTO_INCREMENT NOT NULL, user_id INT UNSIGNED DEFAULT NULL, etablissement_id INT UNSIGNED NOT NULL, type ENUM(\'verbal\', \'physique\', \'cyber\', \'exclusion\', \'autre\') CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, zone VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, severite ENUM(\'faible\', \'modere\', \'eleve\', \'critique\') CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, description TEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, est_recurrent TINYINT DEFAULT 0, statut ENUM(\'nouveau\', \'en_cours\', \'resolu\') CHARACTER SET utf8mb4 DEFAULT \'nouveau\' COLLATE `utf8mb4_unicode_ci`, anonymous_token VARCHAR(64) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT NULL, INDEX etablissement_id (etablissement_id), INDEX user_id (user_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
-        $this->addSql('CREATE TABLE user_badges (id INT UNSIGNED AUTO_INCREMENT NOT NULL, user_id INT UNSIGNED NOT NULL, badge_id INT UNSIGNED NOT NULL, obtained_at DATETIME DEFAULT CURRENT_TIMESTAMP, INDEX badge_id (badge_id), UNIQUE INDEX unique_user_badge (user_id, badge_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
-        $this->addSql('CREATE TABLE users (id INT UNSIGNED AUTO_INCREMENT NOT NULL, prenom VARCHAR(50) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, code_classe VARCHAR(20) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, password VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, role ENUM(\'eleve\', \'admin\', \'referent\') CHARACTER SET utf8mb4 DEFAULT \'eleve\' COLLATE `utf8mb4_unicode_ci`, etablissement_id INT UNSIGNED DEFAULT NULL, is_anonymous TINYINT DEFAULT 1, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, last_login DATETIME DEFAULT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
         $this->addSql('ALTER TABLE alerte DROP FOREIGN KEY FK_3AE753A65C5E57E');
         $this->addSql('ALTER TABLE alerte DROP FOREIGN KEY FK_3AE753A794E2304');
         $this->addSql('ALTER TABLE conversation DROP FOREIGN KEY FK_8A8E26E9A76ED395');
