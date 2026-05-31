@@ -174,13 +174,12 @@
 		{# CHAQUE PAS COMPTE — version finale #}
 		<section class="relative py-24 px-8 overflow-hidden" style="background: linear-gradient(180deg, rgba(255,228,144,0.13) 0%, rgba(255,141,40,0.13) 100%); background-color: #ffffff;">
 
-			<div class="max-w-7xl mx-auto">
+			<div class="max-w-7xl mx-auto justify-center items-center flex flex-col">
 				<h2 class="font-poppins font-bold text-5xl text-center text-gray-800 mb-3">
 					Chaque pas compte 💛
 				</h2>
-				<p class="text-center text-gray-500 text-lg mb-14 max-w-xl mx-auto">
-					Gagne des points de courage et débloque des badges en prenant soin de toi. 
-															            Chaque action compte, chaque pas est une victoire.
+				<p class="text-center text-[#7C5BA6] text-lg mb-14 max-w-[480px] mx-auto">
+					Gagne des points de courage et débloque des badges en prenant soin de toi. Chaque <br> action compte, chaque pas est une victoire.
 				</p>
 
 				<div
@@ -188,11 +187,23 @@
 
 					{# Cerchio SVG arancione #}
 					<div class="flex flex-col items-center shrink-0">
-						<div class="relative w-48 h-48">
-							<div class="absolute inset-4 rounded-full" style="background: radial-gradient(circle, rgba(255,141,40,0.18) 0%, transparent 70%);"></div>
-							<svg class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 180 180">
-								<circle cx="90" cy="90" r="76" fill="none" stroke="rgba(255,141,40,0.15)" stroke-width="13"/>
-								<circle cx="90" cy="90" r="76" fill="none" stroke="#FF8D28" stroke-width="13" stroke-dasharray="478" stroke-dashoffset="120" stroke-linecap="round"/>
+						<div
+							class="relative w-48 h-48">
+							{# Glow radiale dietro il cerchio #}
+							<div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(255,141,40,0.15) 0%, transparent 70%);"></div>
+							<svg
+								class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 180 180">
+								{# Traccia di sfondo #}
+								<circle
+								cx="90" cy="90" r="76" fill="none" stroke="rgba(255,141,40,0.15)" stroke-width="13"/>
+								{# Traccia colorata con gradiente #}
+								<defs>
+									<linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+										<stop offset="0%" style="stop-color:#FFB347;stop-opacity:1"/>
+										<stop offset="100%" style="stop-color:#FF8D28;stop-opacity:1"/>
+									</linearGradient>
+								</defs>
+								<circle cx="90" cy="90" r="76" fill="none" stroke="url(#orangeGrad)" stroke-width="13" stroke-dasharray="478" stroke-dashoffset="120" stroke-linecap="round"/>
 							</svg>
 							<div class="absolute inset-0 flex flex-col items-center justify-center">
 								<div class="font-poppins font-bold text-4xl text-gray-800 leading-none">
@@ -205,48 +216,31 @@
 						</div>
 					</div>
 
-					{# Griglia 2x2 badges avec icones emoji #}
 					{# Griglia 2x2 badges #}
-					<div class="grid grid-cols-2 gap-5" style="min-width: 720px;">
+					<div class="grid grid-cols-2 gap-5 w-full max-w-[480px]">
 
-						<div class="bg-white rounded-2xl p-6 shadow-sm" style="min-height:140px;">
+						<div class="bg-white rounded-2xl p-6 shadow-sm min-h-[140px]">
 							<div class="text-4xl mb-4">⭐</div>
-							<div class="font-poppins font-bold text-base text-gray-800">
-								Premier Pas
-							</div>
-							<div class="text-sm text-gray-400 mt-1">
-								Tu as osé parler
-							</div>
+							<div class="font-poppins font-bold text-base text-gray-800">Premier Pas</div>
+							<div class="text-sm text-gray-400 mt-1">Tu as osé parler</div>
 						</div>
 
-						<div class="bg-white rounded-2xl p-6 shadow-sm" style="min-height:140px;">
+						<div class="bg-white rounded-2xl p-6 shadow-sm min-h-[140px]">
 							<div class="text-4xl mb-4">💪</div>
-							<div class="font-poppins font-bold text-base text-gray-800">
-								Courage
-							</div>
-							<div class="text-sm text-gray-400 mt-1">
-								Tu affrontes tes peurs
-							</div>
+							<div class="font-poppins font-bold text-base text-gray-800">Courage</div>
+							<div class="text-sm text-gray-400 mt-1">Tu affrontes tes peurs</div>
 						</div>
 
-						<div class="bg-white rounded-2xl p-6 shadow-sm" style="min-height:140px;">
+						<div class="bg-white rounded-2xl p-6 shadow-sm min-h-[140px]">
 							<div class="text-4xl mb-4">🧡</div>
-							<div class="font-poppins font-bold text-base text-gray-800">
-								Pas Seul·e
-							</div>
-							<div class="text-sm text-gray-400 mt-1">
-								Tu as demandé de l'aide
-							</div>
+							<div class="font-poppins font-bold text-base text-gray-800">Pas Seul·e</div>
+							<div class="text-sm text-gray-400 mt-1">Tu as demandé de l'aide</div>
 						</div>
 
-						<div class="bg-white rounded-2xl p-6 shadow-sm" style="min-height:140px;">
+						<div class="bg-white rounded-2xl p-6 shadow-sm min-h-[140px]">
 							<div class="text-4xl mb-4">🎤</div>
-							<div class="font-poppins font-bold text-base text-gray-800">
-								Voix Libre
-							</div>
-							<div class="text-sm text-gray-400 mt-1">
-								Tu t'es exprimé·e
-							</div>
+							<div class="font-poppins font-bold text-base text-gray-800">Voix Libre</div>
+							<div class="text-sm text-gray-400 mt-1">Tu t'es exprimé·e</div>
 						</div>
 
 					</div>
