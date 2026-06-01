@@ -1,0 +1,289 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ECHO — Ton compagnon bienveillant{% endblock %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block body %}
+    <div class="font-inter flex" style="height:100vh; overflow:hidden; background:#F0EEFF;">
+
+        {# ================= SIDEBAR GAUCHE ================= #}
+        <aside class="hidden md:flex flex-col w-72 bg-[#F6F5FB] px-6 py-8 border-r border-gray-100 flex-shrink-0 min-h-screen">
+
+            {# Bottone Retour #}
+            <a href="{{ path('app_home') }}" class="flex items-center gap-2 text-sm text-gray-700 hover:text-[#4A157D] transition font-medium mb-4">
+                <span class="text-base">←</span> Retour
+            </a>
+
+            {# Sezione Mascotte Sidebar #}
+            <div class="flex flex-col items-center text-center my-4 relative">
+                <img src="{{ asset('images/chat.png') }}" alt="ECHO" class="w-28 h-28 object-contain drop-shadow-sm mb-3"/>
+                <h2 class="font-black text-2xl text-[#1E1B4B] tracking-wide mb-1">ECHO</h2>
+                <p class="text-xs text-gray-400 font-medium">Ton compagnon bienveillant</p>
+            </div>
+
+            {# Card: Conversation anonyme #}
+            <div class="bg-white border border-purple-100 rounded-3xl p-4 shadow-sm flex gap-3 items-start my-4">
+                <div class="bg-[#EEEBFA] p-2 rounded-xl text-lg flex items-center justify-center">🔐</div>
+                <div>
+                    <h3 class="font-bold text-xs text-gray-800">Conversation anonyme</h3>
+                    <p class="text-xs text-gray-400 mt-1 leading-relaxed">Tout ce que tu dis ici reste confidentiel et sécurisé.</p>
+                </div>
+            </div>
+
+            {# Sezione Liens rapides #}
+            <div class="mt-4">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Liens rapides</p>
+                <div class="flex flex-col gap-4">
+                    <a href="#" class="flex items-center gap-3 text-xs font-semibold text-gray-600 hover:text-[#4A157D] transition group">
+                        <span class="text-base bg-white shadow-sm w-7 h-7 flex items-center justify-center rounded-lg border border-gray-150">📄</span>
+                        <span class="group-hover:underline">Faire un signalement</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 text-xs font-semibold text-gray-600 hover:text-[#4A157D] transition group">
+                        <span class="text-base bg-white shadow-sm w-7 h-7 flex items-center justify-center rounded-lg border border-gray-150">⭐</span>
+                        <span class="group-hover:underline">Mes points Courage</span>
+                    </a>
+                </div>
+            </div>
+
+            {# Sezione Urgence (Fissata in basso) #}
+            <div class="mt-auto pt-6">
+                <div class="bg-[#FEE2E2] border border-[#FCA5A5] rounded-2xl py-2.5 px-4 flex items-center justify-center gap-2 shadow-sm cursor-pointer hover:bg-red-100 transition">
+                    <span class="text-red-600 text-sm">⚠️</span>
+                    <span class="font-extrabold text-[#991B1B] text-xs tracking-wide">Urgence : 3018</span>
+                </div>
+            </div>
+        </aside>
+
+        {# ================= ZONE CHAT PRINCIPALE ================= #}
+        <main class="flex-1 flex flex-col" style="height:100vh; overflow:hidden;">
+
+            {# Header LUMI #}
+            <div class="bg-white px-8 py-4 flex items-center gap-3 shadow-sm flex-shrink-0 z-10">
+                <div class="relative">
+                    <img src="{{ asset('images/logo.png') }}" alt="LUMI" class="w-8 h-8 object-contain flex-shrink-0"/>
+                    <div class="w-3 h-3 bg-emerald-400 border-2 border-white rounded-full absolute -bottom-0.5 -right-0.5 animate-pulse"></div>
+                </div>
+                <div>
+                    <p class="font-black text-[#4A157D] text-sm tracking-wide italic">LUMI</p>
+                    <p class="text-[11px] text-gray-400 font-semibold flex items-center gap-1 mt-0.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span>
+                        En ligne · Toujours là pour toi
+                    </p>
+                </div>
+            </div>
+
+            {# Zone messages scrollable #}
+            <div id="chat-messages" class="flex-1 overflow-y-auto px-6 py-8 flex flex-col" style="background: linear-gradient(to bottom, #F7F5FF, #EFE9FB);">
+
+                {% if messages is empty %}
+                    {# Schermata di Benvenuto GIGANTE (Riempie la pagina) #}
+                    <div class="flex-1 flex flex-col items-center justify-center h-full w-full max-w-4xl mx-auto px-6 py-4 my-auto gap-8" id="welcome-screen">
+
+                        {# 1. Mascotte con Badges #}
+                        <div class="relative w-full max-w-md aspect-square flex items-center justify-center md:scale-125 transform transition-all">
+                            
+                            {# Stelle decorative di sfondo #}
+                            <span class="absolute top-4 left-10 text-yellow-400 text-xl select-none">⭐</span>
+                            <span class="absolute bottom-16 left-6 text-emerald-600 text-sm select-none">●</span>
+                            <span class="absolute top-20 right-6 text-indigo-950 text-sm select-none">●</span>
+                            <span class="absolute top-2 right-24 text-yellow-300 text-sm select-none">✦</span>
+                            <span class="absolute bottom-6 right-20 text-emerald-700 text-lg select-none">●</span>
+
+                            {# Badge Courage (Sinistra) #}
+                            <div class="absolute left-[-10px] top-1/3 bg-white border border-gray-100 shadow-lg rounded-full px-4 py-1.5 flex items-center gap-1.5 z-10 transform -rotate-6 scale-110">
+                                <span class="text-sm">⭐</span>
+                                <span class="text-xs font-bold text-gray-700">Courage</span>
+                            </div>
+
+                            {# Immagine Mascotte #}
+                            <img src="{{ asset('images/chat.png') }}" alt="ECHO" class="w-full h-full max-w-[400px] max-h-[400px] object-contain drop-shadow-2xl animate-bounce" style="animation-duration: 5s;"/>
+
+                            {# Badge Soutien (Destra) #}
+                            <div class="absolute right-[-10px] bottom-1/3 bg-white border border-gray-100 shadow-lg rounded-full px-4 py-1.5 flex items-center gap-1.5 z-10 transform rotate-6 scale-110">
+                                <span class="text-sm">🤝</span>
+                                <span class="text-xs font-bold text-gray-700">Soutien</span>
+                            </div>
+                        </div>
+
+                        {# 2. Testo di Benvenuto #}
+                        <div class="text-center px-4 max-w-2xl">
+                            <h1 class="font-black text-4xl md:text-5xl text-[#2E1065] tracking-tight">Salut 💜</h1>
+                            <p class="text-gray-500 text-lg md:text-xl font-semibold mt-4 leading-relaxed">
+                                Je suis ECHO. Tu peux tout me dire ici, en toute confidentialité.
+                            </p>
+                        </div>
+
+                        {# 3. Pulsanti Quick Actions #}
+                        <div class="flex flex-col gap-4 w-full max-w-xl px-4">
+                            <button onclick="sendQuickMessage('J\'ai un problème à l\'école')" class="group flex items-center justify-between bg-white border-2 border-purple-100/70 rounded-full pl-5 pr-7 py-3.5 text-base font-bold text-[#1E1B4B] hover:border-[#A855F7] hover:bg-purple-50/50 transition-all duration-200 shadow-sm text-left">
+                                <div class="flex items-center gap-4">
+                                    <span class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-xl bg-[#F3E8FF] text-[#A855F7]">🏫</span>
+                                    <span>J'ai un problème à l'école</span>
+                                </div>
+                                <span class="text-gray-400 group-hover:text-[#A855F7] group-hover:translate-x-1 transform transition-all text-sm">➔</span>
+                            </button>
+
+                            <button onclick="sendQuickMessage('Je veux signaler quelque chose')" class="group flex items-center justify-between bg-white border-2 border-purple-100/70 rounded-full pl-5 pr-7 py-3.5 text-base font-bold text-[#1E1B4B] hover:border-[#A855F7] hover:bg-purple-50/50 transition-all duration-200 shadow-sm text-left">
+                                <div class="flex items-center gap-4">
+                                    <span class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-xl bg-[#E0F2FE] text-[#0284C7]">📢</span>
+                                    <span>Je veux signaler quelque chose</span>
+                                </div>
+                                <span class="text-gray-400 group-hover:text-[#A855F7] group-hover:translate-x-1 transform transition-all text-sm">➔</span>
+                            </button>
+
+                            <button onclick="sendQuickMessage('J\'ai juste besoin de parler')" class="group flex items-center justify-between bg-white border-2 border-purple-100/70 rounded-full pl-5 pr-7 py-3.5 text-base font-bold text-[#1E1B4B] hover:border-[#A855F7] hover:bg-purple-50/50 transition-all duration-200 shadow-sm text-left">
+                                <div class="flex items-center gap-4">
+                                    <span class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-xl bg-[#E0F2FE] text-[#0369A1]">💬</span>
+                                    <span>J'ai juste besoin de parler</span>
+                                </div>
+                                <span class="text-gray-400 group-hover:text-[#A855F7] group-hover:translate-x-1 transform transition-all text-sm">➔</span>
+                            </button>
+                        </div>
+
+                        {# 4. Banner Confidentialité #}
+                        <div class="w-full max-w-xl px-4 mb-4">
+                            <div class="bg-[#E9DFFF]/80 backdrop-blur-sm rounded-2xl py-3.5 px-6 text-center border border-purple-100 shadow-sm">
+                                <p class="text-[#6B21A8] text-xs md:text-sm font-extrabold tracking-wide">
+                                    💜 Tout ce que tu dis ici reste confidentiel
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {# Contenitore per i messaggi reali inviati #}
+                <div class="flex flex-col gap-3 w-full mt-auto">
+                    {% for msg in messages %}
+                        {% if msg.sender == 'user' %}
+                            <div class="flex justify-end mb-2">
+                                <div class="bg-[#A855F7] text-white rounded-2xl rounded-br-sm px-4 py-3 max-w-xs md:max-w-md text-sm shadow">
+                                    {{ msg.content }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="flex justify-start gap-2 items-end mb-2">
+                                <img src="{{ asset('images/chat.png') }}" class="w-7 h-7 object-contain flex-shrink-0"/>
+                                <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 max-w-xs md:max-w-md text-sm shadow text-gray-700">
+                                    {{ msg.content }}
+                                    {% if msg.isAlert %}
+                                        <div class="mt-2 bg-red-50 border border-red-200 rounded-xl px-3 py-2 text-xs text-red-600 font-semibold">
+                                            ⚠️ Si tu es en danger, appelle le 3018
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                {# Indicateur de frappe #}
+                <div id="typing-indicator" class="hidden flex justify-start gap-2 items-end mt-2">
+                    <img src="{{ asset('images/chat.png') }}" class="w-7 h-7 object-contain flex-shrink-0"/>
+                    <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow">
+                        <div class="flex gap-1 items-center h-4">
+                            <span class="w-2 h-2 bg-purple-300 rounded-full animate-bounce" style="animation-delay:0s"></span>
+                            <span class="w-2 h-2 bg-purple-300 rounded-full animate-bounce" style="animation-delay:.15s"></span>
+                            <span class="w-2 h-2 bg-purple-300 rounded-full animate-bounce" style="animation-delay:.3s"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Input Form #}
+            <div class="bg-white border-t border-gray-100 px-6 py-4 flex items-center gap-4 flex-shrink-0">
+                <button onclick="window.location.href='#'" class="flex-shrink-0 bg-[#FEF08A] text-[#854D0E] border border-[#FEF08A] rounded-xl px-4 py-2.5 text-xs font-black flex items-center gap-1.5 hover:bg-yellow-200 transition shadow-sm">
+                    ⚠️ Signaler
+                </button>
+                <div class="flex-1 relative flex items-center">
+                    <input id="chat-input" type="text" placeholder="Ecris ton message ..." class="w-full bg-[#F3F4F6] border-none rounded-full pl-5 pr-12 py-3 text-sm font-medium placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#A855F7]" onkeydown="if(event.key==='Enter') sendMessage()"/>
+                    <button onclick="sendMessage()" class="absolute right-2 w-9 h-9 bg-[#A855F7] rounded-full flex items-center justify-center hover:bg-purple-600 transition shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white transform rotate-45 -translate-x-0.5" fill="currentColor" viewbox="0 0 24 24">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            {# Urgence mobile #}
+            <div class="md:hidden bg-red-50 border-t border-red-100 px-4 py-2 flex items-center justify-center gap-2">
+                <span class="text-red-500 text-sm">⚠️</span>
+                <span class="font-bold text-red-600 text-xs">Urgence : 3018</span>
+            </div>
+        </main>
+    </div>
+
+    {# ================= JAVASCRIPT ================= #}
+    <script>
+        function scrollToBottom() {
+            const container = document.getElementById('chat-messages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function appendMessage(text, sender, isAlert = false) {
+            const welcome = document.getElementById('welcome-screen');
+            if (welcome) welcome.remove();
+
+            const container = document.getElementById('chat-messages');
+            if (sender === 'user') {
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="flex justify-end mb-3">
+                        <div class="bg-[#A855F7] text-white rounded-2xl rounded-br-sm px-4 py-3 max-w-xs md:max-w-md text-sm shadow">
+                            ${escapeHtml(text)}
+                        </div>
+                    </div>
+                `);
+            } else {
+                const alertBadge = isAlert ? `
+                    <div class="mt-2 bg-red-50 border border-red-200 rounded-xl px-3 py-2 text-xs text-red-600 font-semibold">
+                        ⚠️ Si tu es en danger, appelle le 3018
+                    </div>` : '';
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="flex justify-start gap-2 items-end mb-3">
+                        <img src="/images/chat.png" class="w-7 h-7 object-contain flex-shrink-0"/>
+                        <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 max-w-xs md:max-w-md text-sm shadow text-gray-700">
+                            ${escapeHtml(text)}${alertBadge}
+                        </div>
+                    </div>
+                `);
+            } 
+            scrollToBottom();
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            appendMessage(text, 'user');
+            const typing = document.getElementById('typing-indicator');
+            typing.classList.remove('hidden');
+            scrollToBottom();
+            try {
+                const res = await fetch('{{ path("app_chat_message") }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({message: text})
+                });
+                const data = await res.json();
+                typing.classList.add('hidden');
+                appendMessage(data.message, 'echo', data.alert);
+            } catch (e) {
+                typing.classList.add('hidden');
+                appendMessage("Je suis là pour toi 💜 Réessaie dans un instant.", 'echo');
+            }
+        }
+
+        function sendQuickMessage(text) {
+            document.getElementById('chat-input').value = text;
+            sendMessage();
+        }
+
+        scrollToBottom();
+    </script>
+{% endblock %}

@@ -1,20 +1,86 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LoginController!{% endblock %}
+{% block title %}Connexion — LUMI
+{% endblock %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<div
+		class="min-h-screen bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] font-inter">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+		{# HEADER #}
+		{% include '_partials/_header.html.twig' %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Dev404/lumi/src/Controller/LoginController.php</code></li>
-        <li>Your template at <code>C:/Users/Dev404/lumi/templates/login/index.html.twig</code></li>
-    </ul>
-</div>
+        {# CONTENU PRINCIPAL #}
+
+		{# MASCOTTE #}
+			<div class="flex flex-col items-center px-4 mb-6"> <div class="relative w-48 h-48 sm:w-64 sm:h-64   md:w-80 md:h-80 lg:w-[440px] lg:h-[440px]">
+				<div class="flex-1 flex justify-center items-center order-1 md:order-2" aria-hidden="true">
+					<div class="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[440px] lg:h-[440px]">
+						<img src="{{ asset('images/chat.png') }}" alt="" class="w-full h-full object-contain animate-float relative z-10"/>
+					</div>
+				</div>
+			</div>
+
+			<h1 class="font-inter font-bold text-4xl text-[#4A157D] mt-6">LUMI 💜</h1>
+			<p class="text-gray-500 text-xl text-center max-w-xl mt-2">
+				Une plateforme bienveillante pour parler de harcèlement et d'intimidation à l'école.
+			</p>
+		</div>
+
+		{# TOGGLE ÉLÈVE / ADMIN #}
+		<div class="flex justify-center gap-3 mb-8 px-4 w-full max-w-3xl mx-auto">
+			<button class="flex-1 bg-[#A855F7] text-white py-3 rounded-full font-bold text-base shadow">
+				Je suis un élève
+			</button>
+			<a href="{{ path('app_login') }}" class="flex-1 text-center border-2 border-[#20736D] text-[#20736D] py-3 rounded-full font-bold text-base hover:bg-white transition">
+				Référent/Admin
+			</a>
+		</div>
+
+		{# CARTE FORMULAIRE #}
+		<div class="flex justify-center px-4 mb-16">
+			<div class="bg-white rounded-3xl shadow-md p-10 w-full max-w-3xl">
+				{% if error %}
+					<div class="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 mb-4 text-sm">
+						{{ error.messageKey | trans(error.messageData, 'security') }}
+					</div>
+				{% endif %}
+
+				<div class="bg-[#EDE0FF] rounded-2xl px-6 py-4 text-center text-[#4A157D] font-semibold text-m mb-6">
+					Tu peux aussi utiliser LUMI sans compte
+				</div>
+
+				<form method="post" action="{{ path('app_login') }}">
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+					<div class="mb-4">
+						<label for="prenom" class="block text-sm font-semibold text-gray-700 mb-2">Prénom</label>
+						<input type="text" id="prenom" name="_username" value="{{ last_username }}" placeholder="ex. Marie" class="w-full border border-gray-200 rounded-2xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#A855F7] bg-gray-50" autocomplete="username">
+					</div>
+
+					<div class="mb-6">
+						<label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Mot de passe</label>
+						<input type="password" id="password" name="_password" placeholder="ton mot de passe" class="w-full border border-gray-200 rounded-2xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#A855F7] bg-gray-50" autocomplete="current-password">
+					</div>
+
+					<button type="submit" class="w-full bg-[#A855F7] text-white py-4 rounded-2xl font-bold text-base hover:opacity-90 transition shadow-md">
+						Se connecter
+					</button>
+				</form>
+
+				<div class="text-center mt-6">
+					<a href="#" class="text-[#A855F7] font-semibold text-m hover:underline">
+						Continuer sans compte →
+					</a>
+				</div>
+				<p class="text-center text-m text-gray-500 mt-2">Crée un compte élève</p>
+			</div>
+		</div>
+
+		
+		
+
+	</div>
 {% endblock %}

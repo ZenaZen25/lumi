@@ -15,104 +15,46 @@ class Conversation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 64, nullable: true)]
-    private ?string $sessionToken = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $startedAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $endedAt = null;
-
     #[ORM\ManyToOne(inversedBy: 'conversations')]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'conversations')]
-    private ?Signalement $signalement = null;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $updatedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $hasAlert = false;
 
     /**
      * @var Collection<int, Message>
      */
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'conversation')]
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'conversation', orphanRemoval: true)]
     private Collection $messages;
 
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTime();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    public function getId(): ?int { return $this->id; }
 
-    public function getSessionToken(): ?string
-    {
-        return $this->sessionToken;
-    }
+    public function getUser(): ?User { return $this->user; }
+    public function setUser(?User $user): static { $this->user = $user; return $this; }
 
-    public function setSessionToken(?string $sessionToken): static
-    {
-        $this->sessionToken = $sessionToken;
+    public function getCreatedAt(): ?\DateTimeImmutable { return $this->createdAt; }
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): static { $this->createdAt = $createdAt; return $this; }
 
-        return $this;
-    }
+    public function getUpdatedAt(): ?\DateTime { return $this->updatedAt; }
+    public function setUpdatedAt(?\DateTime $updatedAt): static { $this->updatedAt = $updatedAt; return $this; }
 
-    public function getStartedAt(): ?\DateTime
-    {
-        return $this->startedAt;
-    }
+    public function isHasAlert(): ?bool { return $this->hasAlert; }
+    public function setHasAlert(?bool $hasAlert): static { $this->hasAlert = $hasAlert; return $this; }
 
-    public function setStartedAt(?\DateTime $startedAt): static
-    {
-        $this->startedAt = $startedAt;
-
-        return $this;
-    }
-
-    public function getEndedAt(): ?\DateTime
-    {
-        return $this->endedAt;
-    }
-
-    public function setEndedAt(?\DateTime $endedAt): static
-    {
-        $this->endedAt = $endedAt;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getSignalement(): ?Signalement
-    {
-        return $this->signalement;
-    }
-
-    public function setSignalement(?Signalement $signalement): static
-    {
-        $this->signalement = $signalement;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Message>
-     */
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
+    public function getMessages(): Collection { return $this->messages; }
 
     public function addMessage(Message $message): static
     {
@@ -120,19 +62,16 @@ class Conversation
             $this->messages->add($message);
             $message->setConversation($this);
         }
-
         return $this;
     }
 
     public function removeMessage(Message $message): static
     {
         if ($this->messages->removeElement($message)) {
-            // set the owning side to null (unless already changed)
             if ($message->getConversation() === $this) {
                 $message->setConversation(null);
             }
         }
-
         return $this;
     }
 }

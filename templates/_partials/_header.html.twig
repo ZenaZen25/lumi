@@ -1,0 +1,32 @@
+<!-- 1. Il contenitore esterno ora è limitato a un massimo di 1238px e centrato con mx-auto -->
+<header
+	class="w-full max-w-[1238px] mx-auto bg-white shadow-sm rounded-[25px] mt-6">
+
+	<!-- 2. Il contenitore interno gestisce solo il flex e i padding, senza bloccare la larghezza a 7xl -->
+	<nav
+		class="flex items-center justify-between px-4 py-4 md:px-8">
+
+		<!-- Logo -->
+		<a href="{{ path('app_home') }}" class="flex items-center gap-2 hover:opacity-90 transition focus:outline-none">
+			<img src="{{ asset('images/logo.png') }}" alt="Lumi Logo" class="w-8 h-8 lg:w-10 lg:h-10 object-contain">
+			<span class="font-inter font-bold text-[#4A157D] text-lg lg:text-xl italic">LUMI</span>
+		</a>
+
+		<!-- Menu visible uniquement sur Tablette et PC -->
+		<div class="hidden md:flex items-center gap-6 lg:gap-8">
+			<a href="#rencontre-lumi" class="hover:opacity-80 font-semibold text-sm focus:outline-none text-[#4A157D]">Parler à Echo</a>
+			<a href="#chaque-pas" class="hover:opacity-80 font-semibold text-sm focus:outline-none text-[#4A157D]">Mes points</a>
+			<a href="{{ path('app_login') }}" class="bg-[#A855F7]/20 text-[#4A157D] px-5 py-2 lg:px-6 rounded-full font-semibold text-sm hover:bg-[#A855F7]/30 transition">
+				Se connecter
+			</a>
+		</div>
+
+		<!-- Bouton visible uniquement sur Mobile -->
+		<div class="md:hidden">
+			<a href="{{ path('app_login') }}" class="bg-[#A855F7] text-white text-xs px-4 py-1.5 rounded-full font-semibold">
+				Se connecter
+			</a>
+		</div>
+
+	</nav>
+</header>

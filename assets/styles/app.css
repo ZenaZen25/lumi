@@ -36,3 +36,11 @@
   .star:nth-child(3) { animation-delay: 0.5s; }
   .star:nth-child(4) { animation-delay: 1.5s; }
 }
+
+@theme {
+  --color-bg: linear-gradient(180deg, #F0EEFF 0%, #F1EAFA 100%);
+}
+/* Ou en CSS natif si tu as un fichier global : */
+.bg-bg {
+    background: linear-gradient(180deg, #F0EEFF 0%, #F1EAFA 100%);
+}

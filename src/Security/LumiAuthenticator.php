@@ -26,13 +26,13 @@ class LumiAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $prenom = $request->getPayload()->getString('prenom');
+        $prenom = $request->getPayload()->getString('_username');
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $prenom);
 
         return new Passport(
             new UserBadge($prenom),
-            new PasswordCredentials($request->getPayload()->getString('password')),
+            new PasswordCredentials($request->getPayload()->getString('_password')),
             [
                 new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
                 new RememberMeBadge(),

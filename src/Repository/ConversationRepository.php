@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Repository;
+// namespace App\Repository;
 
-use App\Entity\Conversation;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+// use App\Entity\Conversation;
+// use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+// use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Conversation>
- */
-class ConversationRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Conversation::class);
-    }
+// /**
+//  * @extends ServiceEntityRepository<Conversation>
+//  */
+// class ConversationRepository extends ServiceEntityRepository
+// {
+//     public function __construct(ManagerRegistry $registry)
+//     {
+//         parent::__construct($registry, Conversation::class);
+//     }
 
     //    /**
     //     * @return Conversation[] Returns an array of Conversation objects
@@ -40,4 +40,21 @@ class ConversationRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
+
+
+namespace App\Repository;
+
+use App\Entity\Conversation;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+class ConversationRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Conversation::class);
+    }
 }
+

@@ -10,16 +10,16 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 		{# {% block stylesheets %}
-						            {{ tailwind_css() }}
-						        {% endblock %} #}
+														            {{ tailwind_css() }}
+														        {% endblock %} #}
 
 		{# {% block stylesheets %}
-							<link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}">
-						{% endblock %} #}
+															<link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}">
+														{% endblock %} #}
 
 
 			{% block stylesheets %}
-		<link rel="stylesheet" href="{{ asset('build/tailwind.css') }}"> {% endblock %}
+		<link rel="stylesheet" href="{{ asset('app.css') }}"> {% endblock %}
 
 		{% block javascripts %}
 			{% block importmap %}
@@ -34,6 +34,17 @@
 			<script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
 		{% endif %}
 	</head>
-	<body class="bg-bg font-inter"> {% block body %}{% endblock %}
+
+
+	<body class="bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] font-inter min-h-screen flex flex-col">
+
+		{% block header %}
+			{% include '_partials/_header.html.twig' %}
+		{% endblock %}
+		<main class="flex-grow"> {% block body %}{% endblock %}
+			</main>
+
+			{% include '_partials/_footer.html.twig' %}
+
 		</body>
 	</html>
