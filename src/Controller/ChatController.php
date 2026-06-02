@@ -13,12 +13,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ChatController extends AbstractController
 {
-    public function __construct(private string $anthropicApiKey) {}
-
     #[Route('/chat', name: 'app_chat')]
     public function index(Request $request, EntityManagerInterface $em): Response
     {
-        // Récupère ou crée une conversation en session
         $session = $request->getSession();
         $conversationId = $session->get('conversation_id');
         $conversation = null;
@@ -29,7 +26,7 @@ final class ChatController extends AbstractController
 
         if (!$conversation) {
             $conversation = new Conversation();
-            $conversation->setUser($this->getUser()); // null si anonyme
+            $conversation->setUser($this->getUser());
             $em->persist($conversation);
             $em->flush();
             $session->set('conversation_id', $conversation->getId());
@@ -39,10 +36,9 @@ final class ChatController extends AbstractController
 
         return $this->render('chat/index.html.twig', [
             'messages' => $messages,
-            'prenom' => $this->getUser()?->getPrenom() ?? 'toi',
+            'prenom'   => $this->getUser()?->getPrenom() ?? 'toi',
         ]);
     }
-
     #[Route('/chat/message', name: 'app_chat_message', methods: ['POST'])]
     public function sendMessage(Request $request, EntityManagerInterface $em): JsonResponse
     {
@@ -53,9 +49,9 @@ final class ChatController extends AbstractController
             return $this->json(['error' => 'Message vide'], 400);
         }
 
-        // Récupère la conversation
         $session = $request->getSession();
         $conversationId = $session->get('conversation_id');
+
         $conversation = $conversationId
             ? $em->getRepository(Conversation::class)->find($conversationId)
             : null;
@@ -65,71 +61,93 @@ final class ChatController extends AbstractController
             $conversation->setUser($this->getUser());
             $em->persist($conversation);
             $em->flush();
+
             $session->set('conversation_id', $conversation->getId());
         }
 
-        // Sauvegarde message utilisateur
+        // USER MESSAGE
         $userMsg = new Message();
         $userMsg->setConversation($conversation);
         $userMsg->setSender('user');
         $userMsg->setContent($userText);
+
         $em->persist($userMsg);
+        $em->flush();
 
-        // Construit l'historique pour Claude
-        $history = [];
-        foreach ($conversation->getMessages() as $msg) {
-            $history[] = [
-                'role' => $msg->getSender() === 'user' ? 'user' : 'assistant',
-                'content' => $msg->getContent(),
-            ];
-        }
-        $history[] = ['role' => 'user', 'content' => $userText];
+        $systemPrompt = "
+Tu es ECHO, un assistant bienveillant.
 
-        // Appel API Claude
-        $systemPrompt = <<<PROMPT
-Tu es ECHO, le compagnon bienveillant et empathique de la plateforme LUMI.
-Tu aides les élèves victimes de harcèlement scolaire ou d'intimidation.
-Tu parles toujours avec douceur, sans juger, en utilisant un langage simple adapté aux enfants et adolescents (8-16 ans).
-Tu écoutes, tu valides les émotions, tu rassures.
+Réponds simplement en JSON:
+{
+  \"message\": \"réponse ici\",
+  \"alert\": false
+}
+";
 
-Tes valeurs :
-- Jamais de jugement
-- Toujours bienveillant
-- Confidentiel et sécurisé
-- Tu proposes toujours de parler à un adulte de confiance (professeur, CPE, parent) ou à la direction quand c'est pertinent.
-
-RÈGLE CRITIQUE DE SÉCURITÉ :
-Si le message contient des indices de danger immédiat (violence physique grave, menace de mort, automutilation, idées suicidaires, abus sexuel), tu dois :
-1. Répondre avec empathie et calme
-2. Dire clairement qu'il faut contacter un adulte ou le 3018 (numéro national contre le harcèlement)
-3. Retourner dans ta réponse JSON le champ "alert": true
-
-Format de réponse OBLIGATOIRE — réponds UNIQUEMENT en JSON valide, sans aucun texte avant ou après :
-{"message": "ta réponse ici", "alert": false}
-
-Si danger détecté :
-{"message": "ta réponse ici", "alert": true}
-PROMPT;
+        $apiKey = $_ENV['GEMINI_API_KEY']
+            ?? $_SERVER['GEMINI_API_KEY']
+            ?? getenv('GEMINI_API_KEY');
 
         try {
-            $response = $this->callClaude($systemPrompt, $history);
-            $decoded = json_decode($response, true);
-            $echoText = $decoded['message'] ?? $response;
-            $isAlert = $decoded['alert'] ?? false;
-        } catch (\Exception $e) {
-            $echoText = "Je suis là pour toi. Peux-tu me dire ce qui se passe ?";
+            $client = \Symfony\Component\HttpClient\HttpClient::create();
+
+            $url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' . $apiKey;
+
+            $response = $client->request('POST', $url, [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                [
+                                    'text' => $systemPrompt . "\n\nMessage: " . $userText
+                                ]
+                            ]
+                        ]
+                    ],
+                    'generationConfig' => [
+                        'temperature' => 0.7,
+                        'maxOutputTokens' => 512,
+                    ]
+                ]
+            ]);
+
+            $content = $response->getContent(false);
+            $data = json_decode($content, true);
+
+            $responseText =
+                $data['candidates'][0]['content']['parts'][0]['text']
+                ?? null;
+
+            if (!$responseText) {
+                throw new \Exception("Réponse vide de Gemini");
+            }
+
+            $responseText = trim($responseText);
+            $decoded = json_decode($responseText, true);
+
+            if (!$decoded || !isset($decoded['message'])) {
+                $echoText = $responseText;
+                $isAlert = false;
+            } else {
+                $echoText = $decoded['message'];
+                $isAlert = (bool) ($decoded['alert'] ?? false);
+            }
+        } catch (\Throwable $e) {
+            $echoText = "Erreur API: " . $e->getMessage();
             $isAlert = false;
         }
 
-        // Sauvegarde réponse ECHO
         $echoMsg = new Message();
         $echoMsg->setConversation($conversation);
         $echoMsg->setSender('echo');
         $echoMsg->setContent($echoText);
         $echoMsg->setIsAlert($isAlert);
+
         $em->persist($echoMsg);
 
-        // Si alerte → marque la conversation
         if ($isAlert) {
             $conversation->setHasAlert(true);
         }
@@ -141,33 +159,5 @@ PROMPT;
             'message' => $echoText,
             'alert' => $isAlert,
         ]);
-    }
-
-    private function callClaude(string $systemPrompt, array $messages): string
-    {
-        $payload = [
-            'model' => 'claude-sonnet-4-5',
-            'max_tokens' => 1024,
-            'system' => $systemPrompt,
-            'messages' => $messages,
-        ];
-
-        $ch = curl_init('https://api.anthropic.com/v1/messages');
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-                'x-api-key: ' . $this->anthropicApiKey,
-                'anthropic-version: 2023-06-01',
-            ],
-            CURLOPT_POSTFIELDS => json_encode($payload),
-        ]);
-
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        $data = json_decode($result, true);
-        return $data['content'][0]['text'] ?? '{"message":"Je suis là pour toi 💜","alert":false}';
     }
 }

@@ -44,3 +44,8 @@
 .bg-bg {
     background: linear-gradient(180deg, #F0EEFF 0%, #F1EAFA 100%);
 }
+
+@keyframes softFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); } /* Muove l'immagine di soli 10px invece che fare un salto */
+}
