@@ -11,39 +11,39 @@
 
 		{# ================= SIDEBAR GAUCHE ================= #}
 		<aside
-			class="hidden md:flex flex-col w-72 bg-[#F6F5FB] px-6 py-8 border-r border-gray-100 flex-shrink-0 min-h-screen">
+			class="hidden md:flex flex-col w-82 bg-[#F6F5FB] px-6 py-8 border-r border-gray-100 shrink-0 min-h-screen">
 
 			{# Bottone Retour #}
-			<a href="{{ path('app_home') }}" class="flex items-center gap-2 text-sm text-gray-700 hover:text-[#4A157D] transition font-medium mb-4">
+			<a href="{{ path('app_home') }}" class="flex items-center gap-2 text-sm text-gray-700 hover:text-primary transition font-medium mb-4">
 				<span class="text-base">←</span>
 				Retour
 			</a>
 
 			{# Sezione Mascotte Sidebar #}
 			<div class="flex flex-col items-center text-center my-4 relative">
-				<img src="{{ asset('images/chat.png') }}" alt="ECHO" class="w-28 h-28 object-contain drop-shadow-sm mb-3"/>
+				<img src="{{ asset('images/Lumi_ECHO.png') }}" alt="ECHO" class="w-50 h-50 object-contain drop-shadow-sm mb-3"/>
 				<h2 class="font-black text-2xl text-[#1E1B4B] tracking-wide mb-1">ECHO</h2>
-				<p class="text-xs text-gray-400 font-medium">Ton compagnon bienveillant</p>
+				<p class="text-m text-gray-400 font-medium">Ton compagnon bienveillant</p>
 			</div>
 
 			{# Card: Conversation anonyme #}
 			<div class="bg-white border border-purple-100 rounded-3xl p-4 shadow-sm flex gap-3 items-start my-4">
 				<div class="bg-[#EEEBFA] p-2 rounded-xl text-lg flex items-center justify-center">🔐</div>
 				<div>
-					<h3 class="font-bold text-xs text-gray-800">Conversation anonyme</h3>
-					<p class="text-xs text-gray-400 mt-1 leading-relaxed">Tout ce que tu dis ici reste confidentiel et sécurisé.</p>
+					<h3 class="font-bold text-sm text-gray-800">Conversation anonyme</h3>
+					<p class="text-s text-gray-400 mt-1 leading-relaxed">Tout ce que tu dis ici reste confidentiel et sécurisé.</p>
 				</div>
 			</div>
 
 			{# Sezione Liens rapides #}
 			<div class="mt-4">
-				<p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Liens rapides</p>
+				<p class="text-s font-bold text-gray-400 uppercase tracking-wider mb-4">Liens rapides</p>
 				<div class="flex flex-col gap-4">
-					<a href="#" class="flex items-center gap-3 text-xs font-semibold text-gray-600 hover:text-[#4A157D] transition group">
+					<a href="{{ path('app_signalement') }}" class="flex items-center gap-3 text-s font-semibold text-gray-600 hover:text-primary transition group">
 						<span class="text-base bg-white shadow-sm w-7 h-7 flex items-center justify-center rounded-lg border border-gray-150">📄</span>
 						<span class="group-hover:underline">Faire un signalement</span>
 					</a>
-					<a href="#" class="flex items-center gap-3 text-xs font-semibold text-gray-600 hover:text-[#4A157D] transition group">
+					<a href="#" class="flex items-center gap-3 text-s font-semibold text-gray-600 hover:text-primary transition group">
 						<span class="text-base bg-white shadow-sm w-7 h-7 flex items-center justify-center rounded-lg border border-gray-150">⭐</span>
 						<span class="group-hover:underline">Mes points Courage</span>
 					</a>
@@ -54,20 +54,21 @@
 			<div class="mt-auto pt-6">
 				<div class="bg-[#FEE2E2] border border-[#FCA5A5] rounded-2xl py-2.5 px-4 flex items-center justify-center gap-2 shadow-sm cursor-pointer hover:bg-red-100 transition">
 					<span class="text-red-600 text-sm">⚠️</span>
-					<span class="font-extrabold text-[#991B1B] text-xs tracking-wide">Urgence : 3018</span>
+					<span class="font-extrabold text-[#991B1B] text-s tracking-wide">Urgence : 3018</span>
 				</div>
 			</div>
 		</aside>
 
 		{# ================= ZONE CHAT PRINCIPALE ================= #}
 		<main
-			class="flex-1 flex flex-col" style="height:100vh; overflow:hidden;">
+			data-controller="chat" class="flex-1 flex flex-col">
+
 
 			{# Header LUMI #}
-			<div class="w-full flex-shrink-0 z-10 px-4 mt-6">
-				<div class="bg-white rounded-[24px] shadow-sm pt-5 pb-5 px-6 w-full md:max-w-[98%] lg:max-w-[96%] mx-auto flex items-center justify-between">
+			<div class="w-full shrink-0 z-10 px-4 mt-6">
+				<div class="bg-white rounded-3xl shadow-sm pt-5 pb-5 px-6 w-full md:max-w-[98%] lg:max-w-[96%] mx-auto flex items-center justify-between">
 					<div class="flex flex-col justify-center">
-						<p class="font-black text-[#4A157D] text-sm italic tracking-wide uppercase font-sans">LUMI</p>
+						<p class="font-black text-primary text-sm italic tracking-wide uppercase font-sans">LUMI</p>
 						<p class="text-xs text-gray-500 font-semibold flex items-center gap-2 mt-1">
 							<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
 							En ligne · Toujours là pour toi
@@ -78,54 +79,57 @@
 
 			{# Zone messages scrollable #}
 			{# ================= ZONE CENTRALE SCROLLABLE (CORRETTA) ================= #}
-			<div id="chat-messages" class="flex-1 overflow-y-auto px-8 py-6 flex flex-col w-full">
+			<div id="chat-messages" data-chat-target="chatMessages" class="flex-1 overflow-y-auto px-8 py-6 flex flex-col w-full">
 
 				{% if messages is empty %}
-					{# LA SCHERMATA DI BENVENUTO APPARE *SOLO* SE LA CHAT È VUOTA #}
-					<div
-						id="welcome-screen" class="w-full max-w-xl flex flex-col items-center justify-center gap-6 my-auto mx-auto">
+					<div id="welcome-screen" data-chat-target="welcomeScreen" class="w-full max-w-xl flex flex-col items-center justify-center gap-6 mt-12 mx-auto">
 
-						{# Mascotte centrale #}
 						<div class="relative w-56 h-56 flex items-center justify-center mb-2">
-							<img src="{{ asset('images/chat.png') }}" alt="ECHO" class="w-full h-full object-contain drop-shadow-xl animate-pulse" style="animation-duration: 3s;"/>
+							<img src="{{ asset('images/logo.png') }}" alt="ECHO" class="w-full h-full object-contain drop-shadow-xl animate-pulse" style="animation-duration: 3s;"/>
 						</div>
 
-						{# Testo di benvenuto #}
-						<div class="text-center">
+						<div class="text-center -mt-12">
 							<h1 class="font-black text-3xl md:text-4xl text-[#1E1B4B] tracking-tight">Salut 💜</h1>
 							<p class="text-gray-500 text-sm md:text-base font-semibold mt-2 leading-relaxed">
 								Je suis ECHO. Tu peux tout me dire ici, en<br>toute confidentialité.
 							</p>
 						</div>
 
-						{# Pulsanti rapidi #}
+						<div class="w-full max-w-sm bg-white border border-purple-100 rounded-2xl px-4 py-3 shadow-sm">
+							<p class="text-xs text-gray-500 leading-relaxed text-center">
+								🔒
+								<strong>Ta confidentialité est protégée.</strong><br>
+								Si tu es en danger immédiat, ECHO peut alerter un adulte de confiance pour t'aider —
+								<span class="text-[#A855F7] font-semibold">toujours pour te protéger 💜</span>
+							</p>
+						</div>
+
 						<div class="flex flex-col gap-3 w-full mt-4">
-							<button type="button" class="quick-action-btn group flex items-center justify-between bg-white border-2 border-purple-100 rounded-full px-6 py-3.5 shadow-sm hover:border-[#A855F7] hover:bg-purple-50/30 transition-all duration-200 text-left w-full" data-message="J'ai un problème à l'école">
+							<button type="button" data-action="click->chat#quickMessage" class="quick-action-btn group flex items-center justify-between bg-white border-2 border-purple-100 rounded-full px-6 py-3.5 shadow-sm hover:border-primary hover:bg-purple-50/30 transition-all duration-200 text-left w-full" data-message="J'ai un problème à l'école">
 								<div class="flex items-center gap-4">
 									<img src="{{ asset('images/School.png') }}" alt="École" class="w-7 h-7 object-contain"/>
 									<span class="text-[#1E1B4B] font-black text-sm">J'ai un problème à l'école</span>
 								</div>
-								<span class="text-purple-300 group-hover:text-[#A855F7] transition font-bold">→</span>
+								<span class="text-purple-300 group-hover:text-primary transition font-bold">→</span>
 							</button>
 
-							<button type="button" class="quick-action-btn group flex items-center justify-between bg-white border-2 border-purple-100 rounded-full px-6 py-3.5 shadow-sm hover:border-[#A855F7] hover:bg-purple-50/30 transition-all duration-200 text-left w-full" data-message="Je veux signaler quelque chose">
+							<button type="button" data-action="click->chat#quickMessage" class="quick-action-btn group flex items-center justify-between bg-white border-2 border-purple-100 rounded-full px-6 py-3.5 shadow-sm hover:border-primary hover:bg-purple-50/30 transition-all duration-200 text-left w-full" data-message="Je veux signaler quelque chose">
 								<div class="flex items-center gap-4">
 									<img src="{{ asset('images/Commercial.png') }}" alt="Signaler" class="w-7 h-7 object-contain"/>
 									<span class="text-[#1E1B4B] font-black text-sm">Je veux signaler quelque chose</span>
 								</div>
-								<span class="text-purple-300 group-hover:text-[#A855F7] transition font-bold">→</span>
+								<span class="text-purple-300 group-hover:text-primary transition font-bold">→</span>
 							</button>
 
-							<button type="button" class="quick-action-btn group flex items-center justify-between bg-white border-2 border-purple-100 rounded-full px-6 py-3.5 shadow-sm hover:border-[#A855F7] hover:bg-purple-50/30 transition-all duration-200 text-left w-full" data-message="J'ai juste besoin de parler">
+							<button type="button" data-action="click->chat#quickMessage" class="quick-action-btn group flex items-center justify-between bg-white border-2 border-purple-100 rounded-full px-6 py-3.5 shadow-sm hover:border-primary hover:bg-purple-50/30 transition-all duration-200 text-left w-full" data-message="J'ai juste besoin de parler">
 								<div class="flex items-center gap-4">
 									<img src="{{ asset('images/ChatP.png') }}" alt="Parler" class="w-7 h-7 object-contain"/>
 									<span class="text-[#1E1B4B] font-black text-sm">J'ai juste besoin de parler</span>
 								</div>
-								<span class="text-purple-300 group-hover:text-[#A855F7] transition font-bold">→</span>
+								<span class="text-purple-300 group-hover:text-primary transition font-bold">→</span>
 							</button>
 						</div>
 
-						{# Banner Riservatezza #}
 						<div class="w-full mt-2">
 							<div class="bg-[#CCAFE7]/30 backdrop-blur-sm rounded-full py-3.5 px-6 text-center border border-[#CCAFE7]/40 flex items-center justify-center shadow-inner">
 								<p class="text-[#6B21A8] text-xs md:text-sm font-black tracking-wide">
@@ -136,26 +140,19 @@
 					</div>
 				{% endif %}
 
-				{# CONTENITORE MESSAGGI REALI (Prende il controllo totale della pagina se ci sono messaggi) #}
-				{# ================= CONTENITORE MESSAGGI REALI ALLINEATO ALL'INPUT ================= #}
-				<div id="real-messages-container" class="flex flex-col gap-4 w-full max-w-5xl mx-auto mt-auto px-4 md:px-8">
+				<div id="real-messages-container" data-chat-target="realMessagesContainer" class="flex flex-col gap-4 w-full max-w-5xl mx-auto mt-auto px-4 md:px-8">
 					{% for msg in messages %}
 						{% if msg.sender == 'user' %}
-							{# Messaggio UTENTE: Si allinea esattamente sul bordo destro dell'input/tasto invio #}
 							<div class="flex justify-end w-full mb-1">
-								<div class="bg-[#A855F7] text-white rounded-[24px] rounded-br-[4px] py-3.5 px-6 max-w-[70%] md:max-w-[60%] text-sm md:text-base shadow-sm font-semibold tracking-wide leading-relaxed break-words">
+								<div class="bg-primary-light text-white rounded-3xl rounded-br-sm py-3.5 px-6 max-w-[70%] md:max-w-[60%] text-sm md:text-base shadow-sm font-semibold tracking-wide leading-relaxed break-words">
 									{{ msg.content }}
 								</div>
 							</div>
 						{% else %}
-							{# Messaggio ECHO: Si allinea esattamente sul bordo sinistro del pulsante Signaler #}
-							<div
-								class="flex justify-start items-end gap-3 w-full mb-1">
-								{# Avatar di ECHO #}
-								<img src="{{ asset('images/chat.png') }}" class="w-9 h-9 object-contain flex-shrink-0 mb-1" alt="ECHO"/>
-
+							<div class="flex justify-start items-end gap-3 w-full mb-1">
+								<img src="{{ asset('images/logo.png') }}" class="w-9 h-9 object-contain shrink-0 mb-1" alt="ECHO"/>
 								<div class="flex flex-col max-w-[70%] md:max-w-[60%]">
-									<div class="bg-white border border-purple-100/60 rounded-[24px] rounded-bl-[4px] py-3.5 px-6 shadow-sm text-[#1E1B4B] text-sm md:text-base font-semibold tracking-wide leading-relaxed break-words">
+									<div class="bg-white border border-purple-100/60 rounded-3xl rounded-bl-sm py-3.5 px-6 shadow-sm text-[#1E1B4B] text-sm md:text-base font-semibold tracking-wide leading-relaxed break-words">
 										{{ msg.content }}
 
 										{% if msg.isAlert %}
@@ -170,10 +167,9 @@
 					{% endfor %}
 				</div>
 
-				{# Mantieni l'indicatore di scrittura con lo stesso identico allineamento max-w-5xl #}
-				<div id="typing-indicator" class="hidden flex justify-start gap-3 items-end mt-6 max-w-4xl mx-auto w-full px-4 md:px-8">
-					<img src="{{ asset('images/chat.png') }}" class="w-9 h-9 object-contain flex-shrink-0" alt="ECHO"/>
-					<div class="bg-white rounded-[24px] rounded-bl-[4px] py-3.5 px-6 shadow-sm flex items-center justify-center">
+				<div id="typing-indicator" data-chat-target="typingIndicator" class="hidden flex justify-start gap-3 items-end mt-6 max-w-4xl mx-auto w-full px-4 md:px-8">
+					<img src="{{ asset('images/logo.png') }}" class="w-9 h-9 object-contain shrink-0" alt="ECHO"/>
+					<div class="bg-white rounded-3xl rounded-bl-sm py-3.5 px-6 shadow-sm flex items-center justify-center">
 						<div class="flex gap-1.5 items-center h-5">
 							<span class="w-2 h-2 bg-[#A855F7] rounded-full animate-bounce [animation-delay:0ms]"></span>
 							<span class="w-2 h-2 bg-[#A855F7] rounded-full animate-bounce [animation-delay:200ms]"></span>
@@ -181,35 +177,34 @@
 						</div>
 					</div>
 				</div>
-				{# Input Form "Floating" #}
-				<div class="w-full flex-shrink-0 bg-transparent  px-6">
-					<div
-						class="max-w-[96%] md:max-w-[98%] lg:max-w-[96%] mx-auto flex items-center gap-4 bg-transparent">
+			</div>
 
-						{# Bouton Signaler #}
-						<button type="button" class="flex-shrink-0 flex items-center gap-2 px-12 h-12 bg-[#FEE2E2] border border-[#FCA5A5] rounded-full text-[#991B1B] font-black text-sm shadow-sm hover:bg-red-100 transition-all duration-200">
-							<span class="text-base">⚠️</span>
-							<span>Signaler</span>
+			{# Input Form "Floating" — fuori da chat-messages #}
+			<div class="w-full flex-shrink-0 bg-transparent px-6 pb-4">
+				<div class="max-w-[96%] md:max-w-[98%] lg:max-w-[96%] mx-auto flex items-center gap-4 bg-transparent">
+
+					<button type="button" class="flex-shrink-0 flex items-center gap-2 px-12 h-12 bg-[#FEE2E2] border border-[#FCA5A5] rounded-full text-[#991B1B] font-black text-sm shadow-sm hover:bg-red-100 transition-all duration-200">
+						<span class="text-base">⚠️</span>
+						<span>Signaler</span>
+					</button>
+
+					<div class="flex-1 relative flex items-center">
+						<input id="chat-input" data-chat-target="chatInput" data-action="keydown->chat#handleKey" type="text" placeholder="Ecris ton message ..." data-url="{{ path('app_chat_message') }}" class="w-full h-16 bg-white border-2 border-purple-100 rounded-full pl-6 pr-20 text-base font-semibold text-[#1E1B4B] placeholder:text-gray-400 shadow-sm focus:outline-none focus:border-primary-light focus:ring-2 focus:ring-primary-light/10 transition-all"/>
+
+
+						<button id="send-btn" data-chat-target="sendBtn" data-action="click->chat#sendMessage" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#A855F7] flex items-center justify-center rounded-full hover:bg-[#9333EA] shadow-md transition-all duration-200" style="width: 48px; height: 48px;">
+							<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white pl-0.5" fill="currentColor" viewbox="0 0 24 24">
+								<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+							</svg>
 						</button>
-
-						{# Input + Send #}
-						<div class="flex-1 relative flex items-center">
-							<input id="chat-input" type="text" placeholder="Ecris ton message ..." data-url="{{ path('app_chat_message') }}" class="w-full h-16 bg-white border-2 border-purple-100 rounded-full pl-6 pr-20 text-base font-semibold text-[#1E1B4B] placeholder:text-gray-400 shadow-sm focus:outline-none focus:border-[#A855F7] focus:ring-2 focus:ring-[#A855F7]/10 transition-all"/>
-
-							<button id="send-btn" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#A855F7] flex items-center justify-center rounded-full hover:bg-[#9333EA] shadow-md transition-all duration-200" style="width: 48px; height: 48px;">
-								<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white pl-0.5" fill="currentColor" viewbox="0 0 24 24">
-									<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-								</svg>
-							</button>
-						</div>
 					</div>
 				</div>
-
-				{# Urgence mobile #}
-				<div class="md:hidden bg-red-50 border-t border-red-100 px-4 py-3 flex items-center justify-center gap-2">
-					<span class="text-red-500 text-sm">⚠️</span>
-					<span class="font-bold text-red-600 text-xs">Urgence : 3018</span>
-				</div>
-			</main>
-		</div>
-	{% endblock %}
+			</div>
+			{# Urgence mobile #}
+			<div class="md:hidden bg-red-50 border-t border-red-100 px-4 py-3 flex items-center justify-center gap-2">
+				<span class="text-red-500 text-sm"></span>
+				<span class="font-bold text-red-600 text-xs">Urgence : 3018</span>
+			</div>
+		</main>
+	</div>
+{% endblock %}

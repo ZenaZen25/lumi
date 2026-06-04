@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Alerte;
 use App\Entity\Conversation;
 use App\Entity\Message;
+use App\Entity\Signalement;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,19 +28,23 @@ final class ChatController extends AbstractController
 
         if (!$conversation) {
             $conversation = new Conversation();
-            $conversation->setUser($this->getUser());
+            $conversation->setUser($this->getUser()); // null si anonyme
             $em->persist($conversation);
             $em->flush();
             $session->set('conversation_id', $conversation->getId());
         }
 
         $messages = $conversation->getMessages()->toArray();
+        $isAnonymous = !$this->getUser() || $session->get('is_anonymous', false);
+        $prenom = $this->getUser()?->getPrenom() ?? 'toi';
 
         return $this->render('chat/index.html.twig', [
-            'messages' => $messages,
-            'prenom'   => $this->getUser()?->getPrenom() ?? 'toi',
+            'messages'     => $messages,
+            'prenom'       => $prenom,
+            'is_anonymous' => $isAnonymous,
         ]);
     }
+
     #[Route('/chat/message', name: 'app_chat_message', methods: ['POST'])]
     public function sendMessage(Request $request, EntityManagerInterface $em): JsonResponse
     {
@@ -61,95 +67,131 @@ final class ChatController extends AbstractController
             $conversation->setUser($this->getUser());
             $em->persist($conversation);
             $em->flush();
-
             $session->set('conversation_id', $conversation->getId());
         }
 
-        // USER MESSAGE
+        // Sauvegarde message utilisateur
         $userMsg = new Message();
         $userMsg->setConversation($conversation);
         $userMsg->setSender('user');
         $userMsg->setContent($userText);
-
         $em->persist($userMsg);
         $em->flush();
 
-        $systemPrompt = "
-Tu es ECHO, un assistant bienveillant.
+        $systemPrompt = <<<PROMPT
+Tu es ECHO, le compagnon bienveillant et empathique de la plateforme LUMI.
+Tu aides les élèves victimes de harcèlement scolaire ou d'intimidation.
+Tu parles toujours avec douceur, sans juger, en utilisant un langage simple adapté aux enfants et adolescents (8-16 ans).
+Tu écoutes, tu valides les émotions, tu rassures.
 
-Réponds simplement en JSON:
-{
-  \"message\": \"réponse ici\",
-  \"alert\": false
-}
-";
+Tes valeurs :
+- Jamais de jugement
+- Toujours bienveillant
+- Confidentiel et sécurisé
+- Tu proposes toujours de parler à un adulte de confiance (professeur, CPE, parent) ou à la direction quand c'est pertinent.
 
-        $apiKey = $_ENV['GEMINI_API_KEY']
-            ?? $_SERVER['GEMINI_API_KEY']
-            ?? getenv('GEMINI_API_KEY');
+RÈGLE CRITIQUE DE SÉCURITÉ :
+Si le message contient des indices de danger immédiat (violence physique grave, menace de mort, automutilation, idées suicidaires, abus sexuel), tu dois :
+1. Répondre avec empathie et calme
+2. Dire clairement qu'il faut contacter un adulte ou le 3018
+3. Retourner "alert": true et "severite": "high"
+
+Format OBLIGATOIRE — réponds UNIQUEMENT en JSON valide, sans texte avant ou après :
+{"message": "ta réponse ici", "alert": false, "severite": "low"}
+
+Valeurs possibles pour severite : "low", "medium", "high"
+PROMPT;
+
+        $apiKey = $_ENV['OPENROUTER_API_KEY']
+            ?? $_SERVER['OPENROUTER_API_KEY']
+            ?? getenv('OPENROUTER_API_KEY');
 
         try {
             $client = \Symfony\Component\HttpClient\HttpClient::create();
 
-            $url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' . $apiKey;
-
-            $response = $client->request('POST', $url, [
+            $response = $client->request('POST', 'https://openrouter.ai/api/v1/chat/completions', [
                 'headers' => [
-                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $apiKey,
+                    'Content-Type'  => 'application/json',
                 ],
                 'json' => [
-                    'contents' => [
-                        [
-                            'parts' => [
-                                [
-                                    'text' => $systemPrompt . "\n\nMessage: " . $userText
-                                ]
-                            ]
-                        ]
+                    'model'       => 'google/gemini-2.5-flash',
+                    'messages'    => [
+                        ['role' => 'system', 'content' => $systemPrompt],
+                        ['role' => 'user',   'content' => $userText],
                     ],
-                    'generationConfig' => [
-                        'temperature' => 0.7,
-                        'maxOutputTokens' => 512,
-                    ]
-                ]
+                    'temperature' => 0.7,
+                    'max_tokens'  => 500,
+                ],
             ]);
 
             $content = $response->getContent(false);
             $data = json_decode($content, true);
-
-            $responseText =
-                $data['candidates'][0]['content']['parts'][0]['text']
-                ?? null;
+            $responseText = $data['choices'][0]['message']['content'] ?? null;
 
             if (!$responseText) {
-                throw new \Exception("Réponse vide de Gemini");
+                throw new \Exception($data['error']['message'] ?? 'Réponse vide');
             }
 
+            // Nettoie les éventuels backticks markdown
             $responseText = trim($responseText);
+            $responseText = preg_replace('/^```json\s*/i', '', $responseText);
+            $responseText = preg_replace('/^```\s*/i', '', $responseText);
+            $responseText = preg_replace('/\s*```$/', '', $responseText);
+
             $decoded = json_decode($responseText, true);
 
-            if (!$decoded || !isset($decoded['message'])) {
-                $echoText = $responseText;
-                $isAlert = false;
-            } else {
+            if (json_last_error() === JSON_ERROR_NONE && isset($decoded['message'])) {
                 $echoText = $decoded['message'];
-                $isAlert = (bool) ($decoded['alert'] ?? false);
+                $isAlert  = (bool)($decoded['alert'] ?? false);
+                $severite = $decoded['severite'] ?? 'low';
+            } else {
+                $echoText = $responseText;
+                $isAlert  = false;
+                $severite = 'low';
             }
         } catch (\Throwable $e) {
-            $echoText = "Erreur API: " . $e->getMessage();
-            $isAlert = false;
+            $echoText = 'Je suis là pour toi 💜 Peux-tu me dire ce qui se passe ?';
+            $isAlert  = false;
+            $severite = 'low';
         }
 
+        // Sauvegarde réponse ECHO
         $echoMsg = new Message();
         $echoMsg->setConversation($conversation);
         $echoMsg->setSender('echo');
         $echoMsg->setContent($echoText);
         $echoMsg->setIsAlert($isAlert);
-
         $em->persist($echoMsg);
 
-        if ($isAlert) {
+        // Si alerte détectée → crée Signalement + Alerte pour l'admin
+        if ($isAlert && !$conversation->isHasAlert()) {
             $conversation->setHasAlert(true);
+
+            $etablissement = $this->getUser()?->getEtablissement();
+            if ($etablissement) {
+                $signalement = new Signalement();
+                $signalement->setType('chat_automatique');
+                $signalement->setZone('chat_echo');
+                $signalement->setSeverite($severite);
+                $signalement->setDescription('⚠️ Danger détecté par ECHO. Message : ' . $userText);
+                $signalement->setStatut('nouveau');
+                $signalement->setUser($this->getUser());
+                $signalement->setAnonymousToken($session->getId());
+                $signalement->setCreatedAt(new \DateTimeImmutable());
+                $signalement->setUpdatedAt(new \DateTime());
+                $signalement->setEtablissement($etablissement);
+                $em->persist($signalement);
+                $em->flush();
+
+                $alerte = new Alerte();
+                $alerte->setSeverite($severite);
+                $alerte->setStatut('nouveau');
+                $alerte->setNoteInterne('Alerte automatique générée par ECHO.');
+                $alerte->setCreatedAt(new \DateTimeImmutable());
+                $alerte->setSignalement($signalement);
+                $em->persist($alerte);
+            }
         }
 
         $conversation->setUpdatedAt(new \DateTime());
@@ -157,7 +199,7 @@ Réponds simplement en JSON:
 
         return $this->json([
             'message' => $echoText,
-            'alert' => $isAlert,
+            'alert'   => $isAlert,
         ]);
     }
 }

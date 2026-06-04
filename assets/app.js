@@ -13,152 +13,232 @@ console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 // import './styles/app.css';
 // import './bootstrap.js';
 
+
+
+
+
+// ======================================================
+// WIZARD DE SIGNALEMENT LUMI
+// Gestion des 4 étapes du formulaire de signalement
+// ======================================================
+
 document.addEventListener('DOMContentLoaded', () => {
-    
-    const chatMessages = document.getElementById('chat-messages');
-    const chatInput = document.getElementById('chat-input');
-    const sendBtn = document.getElementById('send-btn');
-    const typingIndicator = document.getElementById('typing-indicator');
-    const realMessagesContainer = document.getElementById('real-messages-container');
-    const welcomeScreen = document.getElementById('welcome-screen');
-    const quickActionButtons = document.querySelectorAll('.quick-action-btn');
 
-    // Ferma l'esecuzione se non siamo nella pagina della chat
-    if (!chatInput) return;
+    if (!document.getElementById('step-1')) return;
 
-    // Recupera l'URL di Symfony stampato nel data-attribute dell'input
-    const chatUrl = chatInput.dataset.url;
+    // Étape actuellement affichée
+    let currentStep = 1;
 
-    // Funzione per scrollare la chat verso il basso
-    function scrollToBottom() {
-        if (chatMessages) {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+    // Variables qui stockent les choix de l'utilisateur
+    let selectedType = '';
+    let selectedFrequence = '';
+
+    // Correspondance entre les valeurs techniques
+    // et les textes affichés dans le récapitulatif
+    const typeLabels = {
+        verbal: 'Verbal',
+        physique: 'Physique',
+        cyberharcelement: 'Cyberharcèlement',
+        exclusion: 'Exclusion'
+    };
+
+    // Correspondance des fréquences
+    const freqLabels = {
+        une_fois: 'Une fois',
+        plusieurs_fois: 'Plusieurs fois',
+        tous_les_jours: 'Tous les jours'
+    };
+
+    // ======================================================
+    // Fonction qui affiche une étape et masque les autres
+    // ======================================================
+    function showStep(n) {
+
+        // Parcourt les 4 étapes du wizard
+        for (let i = 1; i <= 4; i++) {
+
+            // Affiche uniquement l'étape demandée
+            document
+                .getElementById('step-' + i)
+                .classList.toggle('hidden', i !== n);
         }
+
+        // Mise à jour du texte de progression
+        document.getElementById('step-label').textContent =
+            'Étape ' + n + ' sur 4';
+
+        // Mise à jour visuelle de la barre de progression
+        document.querySelectorAll('.step-bar').forEach(bar => {
+
+            // Numéro de l'étape représentée par la barre
+            const s = parseInt(bar.dataset.step);
+
+            // Colore les étapes déjà complétées
+            bar.style.backgroundColor =
+                s <= n ? '#A855F7' : '#D8B4FE';
+        });
+
+        // Sauvegarde de l'étape courante
+        currentStep = n;
+
+        // Retour automatique en haut de la page
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     }
 
-    // Funzione di sicurezza per evitare attacchi XSS
-    function escapeHtml(text) {
-        return text
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-    }
+    // ======================================================
+    // ÉTAPE 1 : TYPE DE HARCÈLEMENT
+    // ======================================================
 
-    // Funzione per stampare graficamente un messaggio a schermo
-    function appendMessage(text, sender, isAlert = false) {
-        // Se c'è la schermata di benvenuto, la eliminiamo al primo messaggio
-        if (welcomeScreen) {
-            welcomeScreen.remove();
-        }
+    document.querySelectorAll('.type-card').forEach(card => {
 
-        let messageHtml = '';
+        card.addEventListener('click', () => {
 
-        if (sender === 'user') {
-            messageHtml = `
-                <div class="flex justify-end mb-3">
-                    <div class="bg-[#A855F7] text-white rounded-2xl rounded-br-sm px-4 py-3 max-w-xs md:max-w-md text-sm shadow">
-                        ${escapeHtml(text)}
-                    </div>
-                </div>
-            `;
-        } else {
-            const alertBadge = isAlert ? `
-                <div class="mt-2 bg-red-50 border border-red-200 rounded-xl px-3 py-2 text-xs text-red-600 font-semibold">
-                    ⚠️ Si tu es en danger, appelle le 3018
-                </div>` : '';
+            // Réinitialise toutes les cartes
+            document.querySelectorAll('.type-card').forEach(c => {
 
-            messageHtml = `
-                <div class="flex justify-start gap-2 items-end mb-3">
-                    <img src="/images/chat.png" class="w-7 h-7 object-contain flex-shrink-0" alt="ECHO"/>
-                    <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 max-w-xs md:max-w-md text-sm shadow text-gray-700">
-                        ${escapeHtml(text)}
-                        ${alertBadge}
-                    </div>
-                </div>
-            `;
-        }
+                c.classList.remove(
+                    'border-[#A855F7]',
+                    'bg-purple-50'
+                );
 
-        // Se esiste il contenitore specifico inseriamo lì dentro, altrimenti direttamente nel box principale
-        if (realMessagesContainer) {
-            realMessagesContainer.insertAdjacentHTML('beforeend', messageHtml);
-        } else if (chatMessages) {
-            chatMessages.insertAdjacentHTML('beforeend', messageHtml);
-        }
-
-        scrollToBottom();
-    }
-
-    // Funzione principale per raccogliere l'input ed inviarlo al server
-    async function sendMessage() {
-        const text = chatInput.value.trim();
-        if (!text) return;
-
-        // Reset dell'input dell'utente
-        chatInput.value = '';
-
-        // Mostra il messaggio dell'utente a schermo
-        appendMessage(text, 'user');
-
-        // Mostra l'indicatore di scrittura (i tre pallini)
-        if (typingIndicator) {
-            typingIndicator.classList.remove('hidden');
-        }
-        scrollToBottom();
-
-        try {
-            // Chiamata Fetch Ajax asincrona verso il controller Symfony
-            const res = await fetch(chatUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: text })
+                c.classList.add('border-transparent');
             });
 
-            const data = await res.json();
+            // Met en évidence la carte sélectionnée
+            card.classList.remove('border-transparent');
 
-            // Nascondi i pallini
-            if (typingIndicator) {
-                typingIndicator.classList.add('hidden');
-            }
+            card.classList.add(
+                'border-[#A855F7]',
+                'bg-purple-50'
+            );
 
-            // Stampa la risposta del bot
-            appendMessage(data.message, 'echo', data.alert);
+            // Sauvegarde le type choisi
+            selectedType = card.dataset.value;
 
-        } catch (e) {
-            // Gestione dell'errore di rete
-            if (typingIndicator) {
-                typingIndicator.classList.add('hidden');
-            }
-            appendMessage("Je suis là pour toi 💜 Réessaie dans un instant.", 'echo');
-        }
-    }
-
-    // --- EVENT LISTENERS (Gestione dei Click e della Tastiera) ---
-
-    // 1. Click sul bottone Invia (icona aeroplanino)
-    if (sendBtn) {
-        sendBtn.addEventListener('click', sendMessage);
-    }
-
-    // 2. Pressione del tasto Invio dentro la casella di testo
-    chatInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            sendMessage();
-        }
-    });
-
-    // 3. Gestione pulsanti Quick Actions della schermata iniziale
-    quickActionButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const quickText = button.dataset.message;
-            if (quickText) {
-                chatInput.value = quickText;
-                sendMessage();
-            }
+            // Active le bouton Continuer
+            document.getElementById('next-1').disabled = false;
         });
     });
 
-    // Primo scroll automatico all'apertura della pagina
-    scrollToBottom();
+    // Passage à l'étape 2
+    document
+        .getElementById('next-1')
+        .addEventListener('click', () => showStep(2));
+
+    // ======================================================
+    // ÉTAPE 2 : FRÉQUENCE DES FAITS
+    // ======================================================
+
+    document.querySelectorAll('.freq-btn').forEach(btn => {
+
+        btn.addEventListener('click', () => {
+
+            // Réinitialise tous les boutons fréquence
+            document.querySelectorAll('.freq-btn').forEach(b => {
+
+                b.classList.remove(
+                    'border-[#A855F7]',
+                    'text-[#A855F7]'
+                );
+
+                b.classList.add(
+                    'border-gray-200',
+                    'text-gray-600'
+                );
+            });
+
+            // Met en évidence le bouton sélectionné
+            btn.classList.remove(
+                'border-gray-200',
+                'text-gray-600'
+            );
+
+            btn.classList.add(
+                'border-[#A855F7]',
+                'text-[#A855F7]'
+            );
+
+            // Sauvegarde la fréquence choisie
+            selectedFrequence = btn.dataset.value;
+
+            // Active le bouton Continuer
+            document.getElementById('next-2').disabled = false;
+        });
+    });
+
+    // Passage à l'étape 3
+    document
+        .getElementById('next-2')
+        .addEventListener('click', () => showStep(3));
+
+    // ======================================================
+    // ÉTAPE 3 : DESCRIPTION ET RÉCAPITULATIF
+    // ======================================================
+
+    document
+        .getElementById('next-3')
+        .addEventListener('click', () => {
+
+            // Récupère le lieu saisi par l'utilisateur
+            const zone = document
+                .getElementById('input-zone')
+                .value
+                .trim();
+
+            // Affiche le type dans le récapitulatif
+            document.getElementById('recap-type').textContent =
+                typeLabels[selectedType] || selectedType;
+
+            // Affiche la fréquence dans le récapitulatif
+            document.getElementById('recap-frequence').textContent =
+                freqLabels[selectedFrequence] || selectedFrequence;
+
+            // Affiche le lieu seulement s'il a été renseigné
+            if (zone) {
+
+                document.getElementById('recap-zone').textContent =
+                    zone;
+
+                document
+                    .getElementById('recap-zone-row')
+                    .classList.remove('hidden');
+            }
+
+            // Remplit les champs cachés du formulaire
+            // qui seront envoyés au contrôleur Symfony
+            document.getElementById('hidden-type').value =
+                selectedType;
+
+            document.getElementById('hidden-zone').value =
+                zone;
+
+            document.getElementById('hidden-frequence').value =
+                selectedFrequence;
+
+            document.getElementById('hidden-description').value =
+                document.getElementById('input-description').value;
+
+            // Affiche la dernière étape (récapitulatif)
+            showStep(4);
+        });
+
+    // ======================================================
+    // BOUTONS RETOUR
+    // Permet de revenir à l'étape précédente
+    // ======================================================
+
+    document.querySelectorAll('.btn-prev').forEach(btn => {
+
+        btn.addEventListener('click', () => {
+
+            // Empêche de revenir avant l'étape 1
+            if (currentStep > 1) {
+
+                showStep(currentStep - 1);
+            }
+        });
+    });
 });

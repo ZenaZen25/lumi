@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LUMI — Signalement envoyé{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] font-inter flex flex-col items-center justify-center px-4 text-center">
+
+    <div class="relative flex items-center justify-center mb-2">
+        <span class="absolute -top-2 -left-4 text-lg">⭐</span>
+        <span class="absolute -top-1 right-0 text-sm">✨</span>
+        <img src="{{ asset('images/chat.png') }}" alt="ECHO" class="w-36 h-36 object-contain drop-shadow-lg"/>
+    </div>
+    <div class="text-4xl mb-4">🎉</div>
+
+    <h1 class="font-black text-2xl text-[#1E1B4B] mb-3">Ton signalement a bien été<br>envoyé 💜</h1>
+    <p class="text-sm text-gray-400 font-medium mb-8 max-w-xs leading-relaxed">Merci pour ton courage. Un adulte de confiance va examiner ta situation rapidement.</p>
+
+    <div class="bg-[#FEF3C7] border border-[#FDE68A] rounded-full px-8 py-4 font-black text-[#92400E] text-base mb-8 shadow-sm">
+        +50 pts de Courage ⭐
+    </div>
+
+    <div class="flex gap-4 flex-wrap justify-center">
+        <a href="{{ path('app_home') }}" class="border-2 border-[#20736D] text-[#20736D] bg-white/50 px-8 py-3 rounded-full font-black text-sm hover:bg-white transition">
+            Retour à l'accueil
+        </a>
+        <a href="{{ path('app_chat') }}" class="bg-[#A855F7] text-white px-8 py-3 rounded-full font-black text-sm shadow hover:bg-[#9333EA] transition">
+            Parler à ECHO
+        </a>
+    </div>
+</div>
+{% endblock %}

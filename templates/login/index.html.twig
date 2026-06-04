@@ -12,7 +12,7 @@
 		{# HEADER #}
 		{% include '_partials/_header.html.twig' %}
 
-        {# CONTENU PRINCIPAL #}
+		{# CONTENU PRINCIPAL #}
 
 		{# MASCOTTE #}
 			<div class="flex flex-col items-center px-4 mb-6"> <div class="relative w-48 h-48 sm:w-64 sm:h-64   md:w-80 md:h-80 lg:w-[440px] lg:h-[440px]">
@@ -71,7 +71,7 @@
 				</form>
 
 				<div class="text-center mt-6">
-					<a href="#" class="text-[#A855F7] font-semibold text-m hover:underline">
+					<a href="{{ path('app_chat_anonymous') }}" class="text-[#A855F7] font-semibold text-m hover:underline">
 						Continuer sans compte →
 					</a>
 				</div>
@@ -79,8 +79,6 @@
 			</div>
 		</div>
 
-		
-		
 
 	</div>
 {% endblock %}
