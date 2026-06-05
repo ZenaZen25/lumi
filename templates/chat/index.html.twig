@@ -82,13 +82,13 @@
 			<div id="chat-messages" data-chat-target="chatMessages" class="flex-1 overflow-y-auto px-8 py-6 flex flex-col w-full">
 
 				{% if messages is empty %}
-					<div id="welcome-screen" data-chat-target="welcomeScreen" class="w-full max-w-xl flex flex-col items-center justify-center gap-6 mt-12 mx-auto">
+					<div id="welcome-screen" data-chat-target="welcomeScreen" class="w-full max-w-xl flex flex-col items-center justify-center gap-6 -mt-8 mx-auto">
 
-						<div class="relative w-56 h-56 flex items-center justify-center mb-2">
-							<img src="{{ asset('images/logo.png') }}" alt="ECHO" class="w-full h-full object-contain drop-shadow-xl animate-pulse" style="animation-duration: 3s;"/>
+						<div class="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[440px] lg:h-[440px]">
+							<img src="{{ asset('images/chat.png') }}" alt="" class="w-full h-full object-contain animate-float relative z-10"/>
 						</div>
 
-						<div class="text-center -mt-12">
+						<div class="text-center -mt-24">
 							<h1 class="font-black text-3xl md:text-4xl text-[#1E1B4B] tracking-tight">Salut 💜</h1>
 							<p class="text-gray-500 text-sm md:text-base font-semibold mt-2 leading-relaxed">
 								Je suis ECHO. Tu peux tout me dire ici, en<br>toute confidentialité.
@@ -131,7 +131,7 @@
 						</div>
 
 						<div class="w-full mt-2">
-							<div class="bg-[#CCAFE7]/30 backdrop-blur-sm rounded-full py-3.5 px-6 text-center border border-[#CCAFE7]/40 flex items-center justify-center shadow-inner">
+							<div class="bg-[#CCAFE7]/30 backdrop-blur-sm rounded-full py-3.5 px-12 text-center border border-[#CCAFE7]/40 flex items-center justify-center shadow-inner">
 								<p class="text-[#6B21A8] text-xs md:text-sm font-black tracking-wide">
 									💜 Tout ce que tu dis ici reste confidentiel
 								</p>
@@ -201,7 +201,7 @@
 				</div>
 			</div>
 			{# Urgence mobile #}
-			<div class="md:hidden bg-red-50 border-t border-red-100 px-4 py-3 flex items-center justify-center gap-2">
+			<div class="md:hidden bg-red-50 border-t rounded-2xl border-red-100 px-4 py-3 flex items-center justify-center gap-2">
 				<span class="text-red-500 text-sm"></span>
 				<span class="font-bold text-red-600 text-xs">Urgence : 3018</span>
 			</div>

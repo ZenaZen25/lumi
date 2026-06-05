@@ -83,7 +83,8 @@ export default class extends Controller {
     this.chatInputTarget.value = "";
     this.appendMessage(text, "user");
     this.showTyping();
-
+    // console.log("IMAGE UTILISÉE: /images/logo.png");
+    // Il codice che fa funzionare AJAX è questo dentro chat_controller.js:
     try {
       const res = await fetch(url, {
         method: "POST",

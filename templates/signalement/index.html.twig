@@ -4,27 +4,31 @@
 {% endblock %}
 
 {% block body %}
+
+	{# HEADER #}
+	{% include '_partials/_header.html.twig' %}
 	<div
-		class="min-h-screen bg-[#F0EEFF] font-inter px-4 py-6 flex flex-col items-center">
+		data-controller="signalement" class="min-h-screen bg-[#F0EEFF] font-inter px-4 py-6 flex flex-col items-center">
 
 
 		{# PROGRESS BAR #}
 
 		<div class="w-full max-w-4xl rounded-3xl px-6 py-5  mb-8">
 
+
 			<div class="flex gap-2 mb-2">
 
-				<div class="step-bar h-2 flex-1 rounded-full transition-all bg-[#A855F7]" data-step="1"></div>
+				<div data-signalement-target="stepBar" class="step-bar h-2 flex-1 rounded-full transition-all bg-[#A855F7]" data-step="1"></div>
 
-				<div class="step-bar h-2 flex-1 rounded-full transition-all bg-[#D8B4FE]" data-step="2"></div>
+				<div data-signalement-target="stepBar" class="step-bar h-2 flex-1 rounded-full transition-all bg-[#D8B4FE]" data-step="2"></div>
 
-				<div class="step-bar h-2 flex-1 rounded-full transition-all bg-[#D8B4FE]" data-step="3"></div>
+				<div data-signalement-target="stepBar" class="step-bar h-2 flex-1 rounded-full transition-all bg-[#D8B4FE]" data-step="3"></div>
 
-				<div class="step-bar h-2 flex-1 rounded-full transition-all bg-[#D8B4FE]" data-step="4"></div>
+				<div data-signalement-target="stepBar" class="step-bar h-2 flex-1 rounded-full transition-all bg-[#D8B4FE]" data-step="4"></div>
 
 			</div>
 
-			<p id="step-label" class="text-xs text-gray-400 font-semibold mt-1">Étape 1 sur 4</p>
+			<p data-signalement-target="stepLabel" id="step-label" class="text-xs text-gray-400 font-semibold mt-1">Étape 1 sur 4</p>
 
 		</div>
 
@@ -40,42 +44,60 @@
 		</div>
 
 		{# ===== STEP 1 ===== #}
-		<div id="step-1" class="w-full max-w-4xl">
+		<div id="step-1" data-signalement-target="step" data-step="1" class="w-full max-w-4xl">
 			<div class="text-center mb-6">
 				<h1 class="font-black text-4xl text-[#1E1B4B] mb-1">Qu'est-ce qui se passe ?</h1>
 				<p class="text-xl text-gray-400 font-medium">Choisis ce qui correspond le mieux à ta situation</p>
 			</div>
 			<div class="grid grid-cols-2 gap-4 mb-8">
-				<button type="button" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="verbal">
+
+				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="verbal">
+
 					<div class="text-3xl mb-3">💬</div>
 					<div class="font-black text-sm text-[#1E1B4B] mb-1">Verbal</div>
 					<div class="text-xs text-gray-400">Moqueries, insultes, rumeurs</div>
+
 				</button>
-				<button type="button" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="physique">
+
+				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="physique">
+
 					<div class="text-3xl mb-3">👊</div>
 					<div class="font-black text-sm text-[#1E1B4B] mb-1">Physique</div>
 					<div class="text-xs text-gray-400">Coups, bousculades, vols</div>
+
 				</button>
-				<button type="button" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="cyberharcelement">
+
+				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="cyberharcelement">
+
 					<div class="text-3xl mb-3">📱</div>
 					<div class="font-black text-sm text-[#1E1B4B] mb-1">Cyberharcèlement</div>
 					<div class="text-xs text-gray-400">Messages, réseaux sociaux</div>
+
 				</button>
-				<button type="button" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="exclusion">
+
+				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="exclusion">
+
 					<div class="text-3xl mb-3">🚪</div>
 					<div class="font-black text-sm text-[#1E1B4B] mb-1">Exclusion</div>
 					<div class="text-xs text-gray-400">Mise à l'écart, ignorance</div>
+
 				</button>
+
 			</div>
+
 			<div class="flex justify-end">
-				<button type="button" id="next-1" disabled class="bg-[#A855F7] text-white px-10 py-3 rounded-full font-black text-sm shadow hover:bg-[#9333EA] transition disabled:opacity-40 disabled:cursor-not-allowed">
+
+				<button type="button" id="next-1" data-signalement-target="next1" data-action="click->signalement#goStep2" disabled class="bg-[#A855F7] text-white px-10 py-3 rounded-full font-black text-sm shadow hover:bg-[#9333EA] transition disabled:opacity-40 disabled:cursor-not-allowed">
+
 					Continuer
+
 				</button>
+
 			</div>
 		</div>
 
 		{# ===== STEP 2 ===== #}
-		<div id="step-2" class="w-full max-w-4xl hidden">
+		<div id="step-2" data-signalement-target="step" data-step="2" class="w-full max-w-4xl hidden">
 			<div class="text-center mb-6">
 				<h1 class="font-black text-2xl text-[#1E1B4B] mb-1">Où et quand ?</h1>
 				<p class="text-sm text-gray-400 font-medium">Ces infos nous aident à mieux comprendre la situation</p>
@@ -104,7 +126,7 @@
 		</div>
 
 		{# ===== STEP 3 ===== #}
-		<div id="step-3" class="w-full max-w-4xl hidden">
+		<div id="step-3" data-signalement-target="step" data-step="3" class="w-full max-w-4xl hidden">
 			<div class="text-center mb-6">
 				<h1 class="font-black text-2xl text-[#1E1B4B] mb-1">Raconte-nous</h1>
 				<p class="text-sm text-gray-400 font-medium">Tu peux en dire autant ou aussi peu que tu veux</p>
@@ -126,7 +148,7 @@
 		</div>
 
 		{# ===== STEP 4 — RÉCAPITULATIF ===== #}
-		<div id="step-4" class="w-full max-w-4xl hidden">
+		<div id="step-4" data-signalement-target="step" data-step="4" class="w-full max-w-4xl hidden">
 			<div class="text-center mb-6">
 				<h1 class="font-black text-2xl text-[#1E1B4B] mb-1">Récapitulatif</h1>
 				<p class="text-sm text-gray-400 font-medium">Vérifie que tout est correct avant d'envoyer</p>
@@ -161,93 +183,5 @@
 
 	</div>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-let currentStep = 1;
-let selectedType = '';
-let selectedFrequence = '';
 
-const typeLabels = {
-verbal: 'Verbal',
-physique: 'Physique',
-cyberharcelement: 'Cyberharcèlement',
-exclusion: 'Exclusion'
-};
-const freqLabels = {
-une_fois: 'Une fois',
-plusieurs_fois: 'Plusieurs fois',
-tous_les_jours: 'Tous les jours'
-};
-
-function showStep(n) {
-for (let i = 1; i <= 4; i++) {
-document.getElementById('step-' + i).classList.toggle('hidden', i !== n);
-}
-document.getElementById('step-label').textContent = 'Étape ' + n + ' sur 4';
-document.querySelectorAll('.step-bar').forEach(bar => {
-const s = parseInt(bar.dataset.step);
-bar.style.backgroundColor = s <= n ? '#A855F7' : '#D8B4FE';
-});
-currentStep = n;
-window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-// STEP 1 — type cards
-document.querySelectorAll('.type-card').forEach(card => {
-card.addEventListener('click', () => {
-document.querySelectorAll('.type-card').forEach(c => {
-c.classList.remove('border-[#A855F7]', 'bg-purple-50');
-c.classList.add('border-transparent');
-});
-card.classList.remove('border-transparent');
-card.classList.add('border-[#A855F7]', 'bg-purple-50');
-selectedType = card.dataset.value;
-document.getElementById('next-1').disabled = false;
-});
-});
-
-document.getElementById('next-1').addEventListener('click', () => showStep(2));
-
-// STEP 2 — fréquence
-document.querySelectorAll('.freq-btn').forEach(btn => {
-btn.addEventListener('click', () => {
-document.querySelectorAll('.freq-btn').forEach(b => {
-b.classList.remove('border-[#A855F7]', 'text-[#A855F7]');
-b.classList.add('border-gray-200', 'text-gray-600');
-});
-btn.classList.remove('border-gray-200', 'text-gray-600');
-btn.classList.add('border-[#A855F7]', 'text-[#A855F7]');
-selectedFrequence = btn.dataset.value;
-document.getElementById('next-2').disabled = false;
-});
-});
-
-document.getElementById('next-2').addEventListener('click', () => showStep(3));
-
-document.getElementById('next-3').addEventListener('click', () => {
-const zone = document.getElementById('input-zone').value.trim();
-document.getElementById('recap-type').textContent = typeLabels[selectedType] || selectedType;
-document.getElementById('recap-frequence').textContent = freqLabels[selectedFrequence] || selectedFrequence;
-if (zone) {
-document.getElementById('recap-zone').textContent = zone;
-document.getElementById('recap-zone-row').classList.remove('hidden');
-}
-document.getElementById('hidden-type').value = selectedType;
-document.getElementById('hidden-zone').value = zone;
-document.getElementById('hidden-frequence').value = selectedFrequence;
-document.getElementById('hidden-description').value = document.getElementById('input-description').value;
-showStep(4);
-});
-
-// Retour buttons
-document.querySelectorAll('.btn-prev').forEach(btn => {
-btn.addEventListener('click', () => {
-if (currentStep > 1) 
-showStep(currentStep - 1);
-
-
-});
-});
-});
-	</script>
 {% endblock %}
