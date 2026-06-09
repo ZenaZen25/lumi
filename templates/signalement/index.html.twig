@@ -4,9 +4,10 @@
 {% endblock %}
 
 {% block body %}
+{% block header %}{% endblock %}
+
 
 	{# HEADER #}
-	{% include '_partials/_header.html.twig' %}
 	<div
 		data-controller="signalement" class="min-h-screen bg-[#F0EEFF] font-inter px-4 py-6 flex flex-col items-center">
 
@@ -18,7 +19,7 @@
 
 			<div class="flex gap-2 mb-2">
 
-				<div data-signalement-target="stepBar" class="step-bar h-2 flex-1 rounded-full transition-all bg-[#A855F7]" data-step="1"></div>
+				<div data-signalement-target="stepBar" class="step-bar h-2 flex-1 rounded-full transition-all bg-primary-light" data-step="1"></div>
 
 				<div data-signalement-target="stepBar" class="step-bar h-2 flex-1 rounded-full transition-all bg-[#D8B4FE]" data-step="2"></div>
 
@@ -51,7 +52,7 @@
 			</div>
 			<div class="grid grid-cols-2 gap-4 mb-8">
 
-				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="verbal">
+				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-primary-light transition-all text-left" data-value="verbal">
 
 					<div class="text-3xl mb-3">💬</div>
 					<div class="font-black text-sm text-[#1E1B4B] mb-1">Verbal</div>
@@ -59,7 +60,7 @@
 
 				</button>
 
-				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="physique">
+				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-primary-light transition-all text-left" data-value="physique">
 
 					<div class="text-3xl mb-3">👊</div>
 					<div class="font-black text-sm text-[#1E1B4B] mb-1">Physique</div>
@@ -67,7 +68,7 @@
 
 				</button>
 
-				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="cyberharcelement">
+				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-primary-light transition-all text-left" data-value="cyberharcelement">
 
 					<div class="text-3xl mb-3">📱</div>
 					<div class="font-black text-sm text-[#1E1B4B] mb-1">Cyberharcèlement</div>
@@ -75,7 +76,7 @@
 
 				</button>
 
-				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-[#A855F7] transition-all text-left" data-value="exclusion">
+				<button type="button" data-signalement-target="typeCard" data-action="click->signalement#selectType" class="type-card bg-white rounded-2xl p-5 shadow-sm border-2 border-transparent hover:border-primary-light transition-all text-left" data-value="exclusion">
 
 					<div class="text-3xl mb-3">🚪</div>
 					<div class="font-black text-sm text-[#1E1B4B] mb-1">Exclusion</div>
@@ -87,7 +88,7 @@
 
 			<div class="flex justify-end">
 
-				<button type="button" id="next-1" data-signalement-target="next1" data-action="click->signalement#goStep2" disabled class="bg-[#A855F7] text-white px-10 py-3 rounded-full font-black text-sm shadow hover:bg-[#9333EA] transition disabled:opacity-40 disabled:cursor-not-allowed">
+				<button type="button" id="next-1" data-signalement-target="next1" data-action="click->signalement#goStep2" disabled class="bg-primary-light text-white px-10 py-3 rounded-full font-black text-sm shadow hover:bg-[#9333EA] transition disabled:opacity-40 disabled:cursor-not-allowed">
 
 					Continuer
 
@@ -102,46 +103,69 @@
 				<h1 class="font-black text-2xl text-[#1E1B4B] mb-1">Où et quand ?</h1>
 				<p class="text-sm text-gray-400 font-medium">Ces infos nous aident à mieux comprendre la situation</p>
 			</div>
+
 			<div class="bg-white rounded-2xl p-6 shadow-sm mb-4">
 				<label class="block text-sm font-black text-[#1E1B4B] mb-3">
 					Où ça s'est passé ?
 					<span class="text-gray-400 font-normal">(optionnel)</span>
 				</label>
-				<input id="input-zone" type="text" placeholder="Ex: cour de récré, couloire, cantine ..." class="w-full h-12 bg-[#F8F5FF] border border-purple-100 rounded-full px-5 text-sm text-[#1E1B4B] placeholder:text-gray-400 focus:outline-none focus:border-[#A855F7] transition"/>
+
+				<input id="input-zone" data-signalement-target="zoneInput" type="text" placeholder="Ex: cour de récré, couloire, cantine ..." class="w-full h-12 bg-[#F8F5FF] border border-purple-100 rounded-full px-5 text-sm text-[#1E1B4B] placeholder:text-gray-400 focus:outline-none focus:border-primary-light transition"/>
 			</div>
+
 			<div class="bg-white rounded-2xl p-6 shadow-sm mb-8">
 				<label class="block text-sm font-black text-[#1E1B4B] mb-3">À quelle fréquence ?</label>
+
 				<div class="flex gap-3 flex-wrap">
-					<button type="button" class="freq-btn border-2 border-gray-200 rounded-full px-5 py-2 text-sm font-black text-gray-600 hover:border-[#A855F7] hover:text-[#A855F7] transition" data-value="une_fois">Une fois</button>
-					<button type="button" class="freq-btn border-2 border-gray-200 rounded-full px-5 py-2 text-sm font-black text-gray-600 hover:border-[#A855F7] hover:text-[#A855F7] transition" data-value="plusieurs_fois">Plusieurs fois</button>
-					<button type="button" class="freq-btn border-2 border-gray-200 rounded-full px-5 py-2 text-sm font-black text-gray-600 hover:border-[#A855F7] hover:text-[#A855F7] transition" data-value="tous_les_jours">Tous les jours</button>
+					<button type="button" data-signalement-target="freqButton" data-action="click->signalement#selectFrequence" class="freq-btn border-2 border-gray-200 rounded-full px-5 py-2 text-sm font-black text-gray-600 hover:border-primary-light hover:text-primary-light transition" data-value="une_fois">
+						Une fois
+					</button>
+
+					<button type="button" data-signalement-target="freqButton" data-action="click->signalement#selectFrequence" class="freq-btn border-2 border-gray-200 rounded-full px-5 py-2 text-sm font-black text-gray-600 hover:border-primary-light hover:text-primary-light transition" data-value="plusieurs_fois">
+						Plusieurs fois
+					</button>
+
+					<button type="button" data-signalement-target="freqButton" data-action="click->signalement#selectFrequence" class="freq-btn border-2 border-gray-200 rounded-full px-5 py-2 text-sm font-black text-gray-600 hover:border-primary-light hover:text-primary-light transition" data-value="tous_les_jours">
+						Tous les jours
+					</button>
 				</div>
 			</div>
+
 			<div class="flex justify-between items-center">
-				<button type="button" class="btn-prev text-sm text-gray-400 hover:text-gray-600 font-semibold transition">← Retour</button>
-				<button type="button" id="next-2" disabled class="bg-[#A855F7] text-white px-10 py-3 rounded-full font-black text-sm shadow hover:bg-[#9333EA] transition disabled:opacity-40 disabled:cursor-not-allowed">
+				<button type="button" data-action="click->signalement#previous" class="btn-prev text-sm text-gray-400 hover:text-gray-600 font-semibold transition">
+					← Retour
+				</button>
+
+				<button type="button" id="next-2" data-signalement-target="next2" data-action="click->signalement#goStep3" disabled class="bg-primary-light text-white px-10 py-3 rounded-full font-black text-sm shadow hover:bg-[#9333EA] transition disabled:opacity-40 disabled:cursor-not-allowed">
 					Continuer
 				</button>
 			</div>
 		</div>
-
 		{# ===== STEP 3 ===== #}
 		<div id="step-3" data-signalement-target="step" data-step="3" class="w-full max-w-4xl hidden">
 			<div class="text-center mb-6">
 				<h1 class="font-black text-2xl text-[#1E1B4B] mb-1">Raconte-nous</h1>
 				<p class="text-sm text-gray-400 font-medium">Tu peux en dire autant ou aussi peu que tu veux</p>
 			</div>
-			<textarea id="input-description" rows="6" placeholder="Décris ce qui s'est passé, comment tu te sens..." class="w-full bg-white border border-purple-100 rounded-2xl p-5 text-sm text-[#1E1B4B] placeholder:text-gray-400 focus:outline-none focus:border-[#A855F7] shadow-sm transition resize-none mb-4"></textarea>
+
+			<textarea id="input-description" data-signalement-target="descriptionInput" rows="6" placeholder="Décris ce qui s'est passé, comment tu te sens..." class="w-full bg-white border border-purple-100 rounded-2xl p-5 text-sm text-[#1E1B4B] placeholder:text-gray-400 focus:outline-none focus:border-primary-light shadow-sm transition resize-none mb-4"></textarea>
+
 			<div class="bg-[#EDE9FA] rounded-2xl px-5 py-4 mb-8 flex gap-3 items-start">
 				<span class="text-base">💜</span>
 				<div>
-					<div class="font-black text-xs text-[#4A157D] mb-1">Conseil d'ECHO</div>
-					<div class="text-xs text-[#6B21A8] leading-relaxed">Il n'y a pas de bonne ou mauvaise façon de s'exprimer. L'important, c'est que tu te sentes écouté·e.</div>
+					<div class="font-black text-xs text-primary mb-1">Conseil d'ECHO</div>
+					<div class="text-xs text-[#6B21A8] leading-relaxed">
+						Il n'y a pas de bonne ou mauvaise façon de s'exprimer. L'important, c'est que tu te sentes écouté·e.
+					</div>
 				</div>
 			</div>
+
 			<div class="flex justify-between items-center">
-				<button type="button" class="btn-prev text-sm text-gray-400 hover:text-gray-600 font-semibold transition">← Retour</button>
-				<button type="button" id="next-3" class="bg-[#A855F7] text-white px-10 py-3 rounded-full font-black text-sm shadow hover:bg-[#9333EA] transition">
+				<button type="button" data-action="click->signalement#previous" class="btn-prev text-sm text-gray-400 hover:text-gray-600 font-semibold transition">
+					← Retour
+				</button>
+
+				<button type="button" id="next-3" data-action="click->signalement#goStep4" class="bg-primary-light text-white px-10 py-3 rounded-full font-black text-sm shadow hover:bg-[#9333EA] transition">
 					Continuer
 				</button>
 			</div>
@@ -153,35 +177,44 @@
 				<h1 class="font-black text-2xl text-[#1E1B4B] mb-1">Récapitulatif</h1>
 				<p class="text-sm text-gray-400 font-medium">Vérifie que tout est correct avant d'envoyer</p>
 			</div>
+
 			<div class="bg-white rounded-2xl shadow-sm divide-y divide-gray-100 mb-8">
 				<div class="flex justify-between items-center px-6 py-4">
 					<span class="text-sm text-gray-400 font-semibold">Type</span>
-					<span id="recap-type" class="text-sm font-black text-[#1E1B4B]"></span>
+					<span id="recap-type" data-signalement-target="recapType" class="text-sm font-black text-[#1E1B4B]"></span>
 				</div>
+
 				<div class="flex justify-between items-center px-6 py-4">
 					<span class="text-sm text-gray-400 font-semibold">Fréquence</span>
-					<span id="recap-frequence" class="text-sm font-black text-[#1E1B4B]"></span>
+					<span id="recap-frequence" data-signalement-target="recapFrequence" class="text-sm font-black text-[#1E1B4B]"></span>
 				</div>
-				<div id="recap-zone-row" class="hidden flex justify-between items-center px-6 py-4">
+
+				<div id="recap-zone-row" data-signalement-target="recapZoneRow" class="hidden flex justify-between items-center px-6 py-4">
 					<span class="text-sm text-gray-400 font-semibold">Lieu</span>
-					<span id="recap-zone" class="text-sm font-black text-[#1E1B4B]"></span>
+					<span id="recap-zone" data-signalement-target="recapZone" class="text-sm font-black text-[#1E1B4B]"></span>
 				</div>
 			</div>
+
 			<form method="POST" action="{{ path('app_signalement_submit') }}">
-				<input type="hidden" name="type" id="hidden-type">
-				<input type="hidden" name="zone" id="hidden-zone">
-				<input type="hidden" name="frequence" id="hidden-frequence">
-				<input type="hidden" name="description" id="hidden-description">
-				<button type="submit" class="w-full bg-[#A855F7] text-white py-4 rounded-full font-black text-base shadow-lg hover:bg-[#9333EA] transition mb-4">
+
+			    <input type="hidden" name="_token" value="{{ csrf_token('signalement_submit') }}">
+
+				<input type="hidden" name="type" id="hidden-type" data-signalement-target="hiddenType">
+				<input type="hidden" name="zone" id="hidden-zone" data-signalement-target="hiddenZone">
+				<input type="hidden" name="frequence" id="hidden-frequence" data-signalement-target="hiddenFrequence">
+				<input type="hidden" name="description" id="hidden-description" data-signalement-target="hiddenDescription">
+
+				<button type="submit" class="w-full bg-primary-light text-white py-4 rounded-full font-black text-base shadow-lg hover:bg-[#9333EA] transition mb-4">
 					Envoyer mon signalement
 				</button>
 			</form>
+
 			<div class="flex justify-start">
-				<button type="button" class="btn-prev text-sm text-gray-400 hover:text-gray-600 font-semibold transition">← Retour</button>
+				<button type="button" data-action="click->signalement#previous" class="btn-prev text-sm text-gray-400 hover:text-gray-600 font-semibold transition">
+					← Retour
+				</button>
 			</div>
 		</div>
 
-	</div>
 
-
-{% endblock %}
+	{% endblock %}

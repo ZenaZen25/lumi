@@ -47,7 +47,7 @@ class Signalement
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'signalements')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Etablissement $etablissement = null;
 
     /**

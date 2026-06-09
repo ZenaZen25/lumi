@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LUMI — Mon profil{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-[#F0EEFF] font-inter px-4 py-10">
+
+    <div class="max-w-5xl mx-auto">
+
+        <h1 class="text-3xl font-black text-[#1E1B4B] mb-2">
+            Bonjour {{ user.prenom }} 💜
+        </h1>
+
+        <p class="text-gray-500 font-semibold mb-8">
+            Voici ton espace personnel LUMI.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+
+            <div class="bg-white rounded-3xl p-6 shadow-sm">
+                <p class="text-sm text-gray-400 font-bold mb-2">Points Courage</p>
+                <p class="text-4xl font-black text-[#A855F7]">
+                    {{ totalPoints }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 shadow-sm">
+                <p class="text-sm text-gray-400 font-bold mb-2">Badges obtenus</p>
+                <p class="text-4xl font-black text-[#A855F7]">
+                    {{ badges|length }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 shadow-sm">
+                <p class="text-sm text-gray-400 font-bold mb-2">Statut</p>
+                <p class="text-xl font-black text-[#1E1B4B]">
+                    Élève
+                </p>
+            </div>
+
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+            <div class="bg-white rounded-3xl p-6 shadow-sm">
+                <h2 class="text-xl font-black text-[#1E1B4B] mb-4">
+                    Mes badges
+                </h2>
+
+                {% if badges|length > 0 %}
+                    <div class="flex flex-col gap-3">
+                        {% for userBadge in badges %}
+                            <div class="flex items-center gap-3 bg-[#F8F5FF] rounded-2xl p-4">
+                                <span class="text-2xl">{{ userBadge.badge.icone }}</span>
+                                <div>
+                                    <p class="font-black text-[#1E1B4B]">
+                                        {{ userBadge.badge.nom }}
+                                    </p>
+                                    <p class="text-xs text-gray-400">
+                                        {{ userBadge.badge.description }}
+                                    </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-gray-400 text-sm">
+                        Aucun badge pour le moment.
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 shadow-sm">
+                <h2 class="text-xl font-black text-[#1E1B4B] mb-4">
+                    Historique des points
+                </h2>
+
+                {% if points|length > 0 %}
+                    <div class="flex flex-col gap-3">
+                        {% for point in points %}
+                            <div class="flex justify-between items-center bg-[#F8F5FF] rounded-2xl p-4">
+                                <div>
+                                    <p class="font-bold text-[#1E1B4B]">
+                                        {{ point.raison }}
+                                    </p>
+                                    <p class="text-xs text-gray-400">
+                                        {{ point.createdAt ? point.createdAt|date('d/m/Y H:i') : '' }}
+                                    </p>
+                                </div>
+                                <span class="font-black text-[#A855F7]">
+                                    +{{ point.points }}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-gray-400 text-sm">
+                        Aucun point pour le moment.
+                    </p>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <div class="mt-8 flex gap-4">
+            <a href="{{ path('app_home') }}" class="bg-white text-[#4A157D] px-6 py-3 rounded-full font-black shadow-sm">
+                Retour accueil
+            </a>
+
+            <a href="{{ path('app_chat') }}" class="bg-[#A855F7] text-white px-6 py-3 rounded-full font-black shadow-sm">
+                Parler à ECHO
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{# {% block header %}{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] font-inter flex items-center justify-center px-4 py-8">
+
+        <div
+            class="w-full max-w-2xl flex flex-col items-center">
+
+            {# MASCOTTE #}
+            {# <div class="flex justify-center mb-6" aria-hidden="true">   
+
+                <div class="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+
+                    <img src="{{ asset('images/Lumi_ECHO.png') }}" alt="ECHO" class="w-full h-full object-contain animate-float"/>
+
+                </div>   #}

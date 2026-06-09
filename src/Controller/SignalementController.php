@@ -4,11 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Signalement;
 use App\Entity\Alerte;
+use App\Entity\CouragePoint;
+use App\Entity\Badge;
+use App\Entity\UserBadge;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
 
 class SignalementController extends AbstractController
 {
@@ -136,13 +141,48 @@ class SignalementController extends AbstractController
         // Récompense l'utilisateur connecté
         // pour encourager les signalements.
         //
-        if ($this->getUser()) {
+        $user = $this->getUser();
 
-            $user = $this->getUser();
+        if ($user) {
+            $couragePoint = new CouragePoint();
 
-            $user->setCouragePoints(
-                ($user->getCouragePoints() ?? 0) + 50
-            );
+            $couragePoint->setUser($user);
+            $couragePoint->setPoints(50);
+            $couragePoint->setRaison('Signalement envoyé');
+            $couragePoint->setCreatedAt(new \DateTimeImmutable());
+
+            $em->persist($couragePoint);
+            $em->flush();
+
+            $totalPoints = 0;
+
+            foreach ($user->getCouragePoints() as $point) {
+                $totalPoints += $point->getPoints();
+            }
+
+            $badges = $em->getRepository(Badge::class)->findAll();
+
+            foreach ($badges as $badge) {
+                if ($badge->getPointsRequis() !== null && $totalPoints >= $badge->getPointsRequis()) {
+                    $alreadyHasBadge = false;
+
+                    foreach ($user->getUserBadges() as $userBadge) {
+                        if ($userBadge->getBadge() === $badge) {
+                            $alreadyHasBadge = true;
+                            break;
+                        }
+                    }
+
+                    if (!$alreadyHasBadge) {
+                        $userBadge = new UserBadge();
+                        $userBadge->setUser($user);
+                        $userBadge->setBadge($badge);
+                        $userBadge->setObtainedAt(new \DateTimeImmutable());
+
+                        $em->persist($userBadge);
+                    }
+                }
+            }
 
             $em->flush();
         }
@@ -160,11 +200,30 @@ class SignalementController extends AbstractController
      * Affiche la page de confirmation
      * après l'envoi d'un signalement.
      */
+    // #[Route('/signalement/confirmation', name: 'app_signalement_confirmation')]
+    // public function confirmation(): Response
+    // {
+    //     return $this->render(
+    //         'signalement/confirmation.html.twig'
+    //     );
+    // }
+
     #[Route('/signalement/confirmation', name: 'app_signalement_confirmation')]
     public function confirmation(): Response
     {
+        $totalPoints = 0;
+
+        if ($this->getUser()) {
+            foreach ($this->getUser()->getCouragePoints() as $point) {
+                $totalPoints += $point->getPoints();
+            }
+        }
+
         return $this->render(
-            'signalement/confirmation.html.twig'
+            'signalement/confirmation.html.twig',
+            [
+                'totalPoints' => $totalPoints,
+            ]
         );
     }
 }
