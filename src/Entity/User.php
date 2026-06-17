@@ -17,6 +17,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $email = null;
+
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $prenom = null;
 
@@ -73,6 +76,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Alerte::class, mappedBy: 'treatedBy')]
     private Collection $alertesTraitees;
+
+
 
     public function __construct()
     {
@@ -324,9 +329,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     // ---- UserInterface ----
 
+   
+
     public function getUserIdentifier(): string
     {
-        return (string) $this->prenom;
+        return (string) $this->email;
     }
 
     public function getRoles(): array
@@ -337,5 +344,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // nothing
+    }
+
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

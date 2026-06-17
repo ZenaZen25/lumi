@@ -10,12 +10,11 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 		{# {% block stylesheets %}
-														            {{ tailwind_css() }}
-														        {% endblock %} #}
-
+						{{ tailwind_css() }}
+						{% endblock %} #}
 		{# {% block stylesheets %}
-															<link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}">
-														{% endblock %} #}
+						<link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}">
+						{% endblock %} #}
 
 
 			{% block stylesheets %}
@@ -36,8 +35,7 @@
 	</head>
 
 
-	<body class="bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] font-inter min-h-screen flex flex-col">
-
+	<body class="bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] min-h-screen flex flex-col">
 		{% block header %}
 			{% include '_partials/_header.html.twig' %}
 		{% endblock %}

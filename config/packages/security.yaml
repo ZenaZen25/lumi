@@ -7,7 +7,7 @@ security:
     app_user_provider:
       entity:
         class: App\Entity\User
-        property: prenom
+        property: email
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -42,6 +42,7 @@ security:
     - { path: ^/chat, roles: PUBLIC_ACCESS }
     - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/signalement, roles: PUBLIC_ACCESS }
+    - { path: ^/profil, roles: ROLE_ELEVE }
 when@test:
   security:
     password_hashers:

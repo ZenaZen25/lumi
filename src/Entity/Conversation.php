@@ -40,21 +40,55 @@ class Conversation
         $this->updatedAt = new \DateTime();
     }
 
-    public function getId(): ?int { return $this->id; }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-    public function getUser(): ?User { return $this->user; }
-    public function setUser(?User $user): static { $this->user = $user; return $this; }
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
 
-    public function getCreatedAt(): ?\DateTimeImmutable { return $this->createdAt; }
-    public function setCreatedAt(?\DateTimeImmutable $createdAt): static { $this->createdAt = $createdAt; return $this; }
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
 
-    public function getUpdatedAt(): ?\DateTime { return $this->updatedAt; }
-    public function setUpdatedAt(?\DateTime $updatedAt): static { $this->updatedAt = $updatedAt; return $this; }
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+    public function setUpdatedAt(?\DateTime $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
 
-    public function isHasAlert(): ?bool { return $this->hasAlert; }
-    public function setHasAlert(?bool $hasAlert): static { $this->hasAlert = $hasAlert; return $this; }
+    public function isHasAlert(): ?bool
+    {
+        return $this->hasAlert;
+    }
+    public function setHasAlert(?bool $hasAlert): static
+    {
+        $this->hasAlert = $hasAlert;
+        return $this;
+    }
 
-    public function getMessages(): Collection { return $this->messages; }
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
 
     public function addMessage(Message $message): static
     {
@@ -72,6 +106,21 @@ class Conversation
                 $message->setConversation(null);
             }
         }
+        return $this;
+    }
+
+    #[ORM\ManyToOne(inversedBy: 'conversations')]
+    private ?Signalement $signalement = null;
+
+    public function getSignalement(): ?Signalement
+    {
+        return $this->signalement;
+    }
+
+    public function setSignalement(?Signalement $signalement): static
+    {
+        $this->signalement = $signalement;
+
         return $this;
     }
 }

@@ -39,6 +39,18 @@ class SignalementController extends AbstractController
     #[Route('/signalement/submit', name: 'app_signalement_submit', methods: ['POST'])]
     public function submit(Request $request, EntityManagerInterface $em): Response
     {
+
+
+        if (
+            !$this->isCsrfTokenValid(
+                'signalement_submit',
+                $request->request->get('_token')
+            )
+        ) {
+            throw $this->createAccessDeniedException(
+                'Token CSRF invalide.'
+            );
+        }
         // ==========================
         // RÉCUPÉRATION DES DONNÉES
         // ==========================
@@ -47,6 +59,17 @@ class SignalementController extends AbstractController
         $zone        = $request->request->get('zone', '');
         $frequence   = $request->request->get('frequence');
         $description = $request->request->get('description', '');
+
+        if (!$type || !$frequence) {
+            $this->addFlash(
+                'error',
+                'Veuillez compléter les champs obligatoires.'
+            );
+
+            return $this->redirectToRoute(
+                'app_signalement'
+            );
+        }
 
         // ==========================
         // CALCUL DE LA SÉVÉRITÉ
@@ -142,6 +165,7 @@ class SignalementController extends AbstractController
         // pour encourager les signalements.
         //
         $user = $this->getUser();
+        // dd($this->getUser());
 
         if ($user) {
             $couragePoint = new CouragePoint();

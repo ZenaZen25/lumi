@@ -5,312 +5,299 @@
 
 {% block body %}
 
-
-	<div
-		class="min-h-screen bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] pt-6">
-
-	
+	<main
+		class="min-h-screen bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA]">
 
 		{# HERO #}
-		<section class="px-8 py-12 md:py-20">
+		<section id="hero" class="px-8 py-12 md:py-20">
 			<div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
-				<div class="flex-1">
+				<article class="flex-1">
 					<div class="inline-flex items-center gap-2 bg-white shadow-sm border border-gray-100 rounded-full px-5 py-2 text-sm font-medium text-gray-700 mb-8">
 						🔒
 						<span class="italic font-bold">100% anonyme</span>
 						· Gratuit · Sécurisé
 					</div>
-					<h1 class="font-poppins font-bold text-6xl mb-6">
+
+					<h1 class="font-poppins font-bold text-5xl md:text-6xl mb-6 leading-tight">
 						<span class="text-[#20736D]">Tu n'es pas</span>
 						<span class="text-[#4A157D]">
 							seul·e.</span>
 					</h1>
-					<p class="text-xl text-[#000000] opacity-80 leading-relaxed mb-8 max-w-lg">
+
+					<p class="text-xl text-gray-700 leading-relaxed mb-8 max-w-lg">
 						<span class="text-[#4A157D] font-bold">ECHO</span>
 						<span class="text-[#CB30E0] font-bold">
 							t'écoute</span>
 						sans te juger, à n'importe quelle heure.
-						<span class="text-[#20736D] font-bold">
-							Parle,</span>
+						<span class="text-[#20736D] font-bold">Parle,</span>
 						<span class="text-[#FF8D28] font-bold">
 							signale,</span>
 						<span class="text-[#CB30E0] font-bold">
 							reprends confiance.</span>
 					</p>
+
 					<div class="flex flex-wrap gap-4 mt-8 mb-6">
-						<a href="#" class="bg-[#A855F7]/80 text-white px-8 py-3 rounded-full font-bold flex items-center gap-2 hover:opacity-90 transition shadow-md">
+						<a href="{{ path('app_chat') }}" class="bg-[#A855F7]/80 text-white px-8 py-3 rounded-full font-bold flex items-center gap-2 hover:opacity-90 transition shadow-md">
 							💬 Parler à ECHO
 						</a>
-						<a href="#" class="border-2 border-[#20736D] text-[#20736D] bg-white/40 px-8 py-3 rounded-full font-bold hover:bg-white transition shadow-sm">
+
+						<a href="{{ path('app_signalement') }}" class="border-2 border-[#20736D] text-[#20736D] bg-white/40 px-8 py-3 rounded-full font-bold hover:bg-white transition shadow-sm">
 							Faire un signalement
 						</a>
 					</div>
+
 					<div class="flex gap-6 mt-6 text-sm font-semibold opacity-90">
 						<span>🔒 Anonyme</span>
 						<span>🛡️ Sécurisé</span>
 						<span>💜 Sans jugement</span>
 					</div>
-				</div>
+				</article>
 
-				{# ECHO MASCOTTE avec badges flottants #}
-				<div class="flex-1 flex justify-center items-center">
+				<aside class="flex-1 flex justify-center items-center">
 					<div class="relative w-72 h-72 md:w-[480px] md:h-[480px]">
-						<img src="{{ asset('images/echo.png') }}" alt="ECHO mascotte" class="w-full h-full object-contain animate-float relative z-10"/>
+						<img src="{{ asset('images/echo.png') }}" alt="ECHO mascotte" class="w-full h-full object-contain animate-float relative z-10">
 					</div>
-				</div>
+				</aside>
 			</div>
 		</section>
 
-			{# STATS #}
-			<section class="bg-[#CCAFE7]/20 py-8 px-6 lg:py-10 lg:px-8" aria-label="Statistiques clés">
-				<div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8 text-center text-[#4A157D]">
-					<div>
-						<div class="font-inter font-bold text-2xl lg:text-3xl">12 000+</div>
-						<div class="text-[11px] lg:text-xs font-medium opacity-80 mt-1">élèves aidés</div>
-					</div>
-					<div>
-						<div class="font-inter font-bold text-2xl lg:text-3xl">98%</div>
-						<div class="text-[11px] lg:text-xs font-medium opacity-80 mt-1">se sentent écoutés</div>
-					</div>
-					<div>
-						<div class="font-inter font-bold text-2xl lg:text-3xl">24h/24</div>
-						<div class="text-[11px] lg:text-xs font-medium opacity-80 mt-1">Disponible</div>
-					</div>
-					<div>
-						<div class="font-inter font-bold text-2xl lg:text-3xl">RGPD</div>
-						<div class="text-[11px] lg:text-xs font-medium opacity-80 mt-1">Conforme</div>
-					</div>
-				</div>
-			</section>
+		{# STATS #}
+		<section id="stats" class="bg-[#CCAFE7]/30 py-8 px-8" aria-label="Statistiques LUMI">
+			<div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center text-[#4A157D]">
+				<article>
+					<p class="font-poppins font-bold text-3xl">12 000+</p>
+					<p class="text-sm font-semibold mt-1">élèves aidés</p>
+				</article>
 
-			{# COMMENT CA MARCHE #}
-			<section class="py-16 px-6 md:py-24 md:px-8 bg-gradient-to-b from-transparent to-[#F5F2FA]" aria-labelledby="steps-title">
-				<div class="max-w-7xl mx-auto">
-					<h2 id="steps-title" class="font-inter font-bold text-3xl lg:text-4xl text-center text-[#4B4B57] mb-12 lg:mb-16 tracking-tight">Comment ça marche ?</h2>
-					<div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-8">
-						<div class="relative bg-white rounded-3xl p-6 lg:p-8 shadow-sm pt-10 lg:pt-12 border border-black/[0.02]">
-							<div class="absolute -top-3 left-6 w-8 h-8 lg:w-9 lg:h-9 bg-[#A855F7] text-white rounded-full flex items-center justify-center font-bold text-xs lg:text-sm shadow-sm">1</div>
-							<div class="text-2xl lg:text-3xl mb-3 lg:mb-4">🚪</div>
-							<h3 class="font-inter font-bold text-gray-800 text-sm lg:text-base mb-2">Tu choisis comment arriver</h3>
-							<p class="text-gray-500 text-xs lg:text-sm leading-relaxed font-normal">Reste anonyme ou crée un compte, c'est toi qui décides.</p>
-						</div>
-						<div class="relative bg-white rounded-3xl p-6 lg:p-8 shadow-sm pt-10 lg:pt-12 border border-black/[0.02]">
-							<div class="absolute -top-3 left-6 w-8 h-8 lg:w-9 lg:h-9 bg-[#A855F7] text-white rounded-full flex items-center justify-center font-bold text-xs lg:text-sm shadow-sm">2</div>
-							<div class="text-2xl lg:text-3xl mb-3 lg:mb-4">💬</div>
-							<h3 class="font-inter font-bold text-gray-800 text-sm lg:text-base mb-2">Tu parles à ECHO</h3>
-							<p class="text-gray-500 text-xs lg:text-sm leading-relaxed font-normal">Notre IA empathique t'écoute, te comprend et t'accompagne.</p>
-						</div>
-						<div class="relative bg-white rounded-3xl p-6 lg:p-8 shadow-sm pt-10 lg:pt-12 border border-black/[0.02]">
-							<div class="absolute -top-3 left-6 w-8 h-8 lg:w-9 lg:h-9 bg-[#A855F7] text-white rounded-full flex items-center justify-center font-bold text-xs lg:text-sm shadow-sm">3</div>
-							<div class="text-2xl lg:text-3xl mb-3 lg:mb-4">📋</div>
-							<h3 class="font-inter font-bold text-gray-800 text-sm lg:text-base mb-2">ECHO agit pour toi</h3>
-							<p class="text-gray-500 text-xs lg:text-sm leading-relaxed font-normal">Un rapport confidentiel est généré pour alerter les bonnes personnes.</p>
-						</div>
-					</div>
+				<article>
+					<p class="font-poppins font-bold text-3xl">98%</p>
+					<p class="text-sm font-semibold mt-1">se sentent écoutés</p>
+				</article>
+
+				<article>
+					<p class="font-poppins font-bold text-3xl">24h/24</p>
+					<p class="text-sm font-semibold mt-1">Disponible</p>
+				</article>
+
+				<article>
+					<p class="font-poppins font-bold text-3xl">RGPD</p>
+					<p class="text-sm font-semibold mt-1">Conforme</p>
+				</article>
+			</div>
+		</section>
+
+		{# COMMENT ÇA MARCHE #}
+		<section id="comment-ca-marche" class="py-20 px-8" aria-labelledby="comment-title">
+			<div class="max-w-7xl mx-auto">
+				<h2 id="comment-title" class="font-poppins font-bold text-5xl text-center text-gray-700 mb-16">
+					Comment ça marche ?
+				</h2>
+
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+					<article class="relative bg-white rounded-3xl p-8 shadow-sm pt-10">
+						<div class="absolute -top-4 left-6 w-9 h-9 bg-[#A855F7] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md">1</div>
+						<div class="text-4xl mb-4">🚪</div>
+						<h3 class="font-poppins font-bold text-base mb-2">Tu choisis comment arriver</h3>
+						<p class="text-gray-500 text-sm leading-relaxed">Reste anonyme ou crée un compte, c'est toi qui décides.</p>
+					</article>
+
+					<article class="relative bg-white rounded-3xl p-8 shadow-sm pt-10">
+						<div class="absolute -top-4 left-6 w-9 h-9 bg-[#A855F7] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md">2</div>
+						<div class="text-4xl mb-4">💬</div>
+						<h3 class="font-poppins font-bold text-base mb-2">Tu parles à ECHO</h3>
+						<p class="text-gray-500 text-sm leading-relaxed">Notre IA empathique t'écoute, te comprend et t'accompagne.</p>
+					</article>
+
+					<article class="relative bg-white rounded-3xl p-8 shadow-sm pt-10">
+						<div class="absolute -top-4 left-6 w-9 h-9 bg-[#A855F7] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md">3</div>
+						<div class="text-4xl mb-4">📋</div>
+						<h3 class="font-poppins font-bold text-base mb-2">ECHO agit pour toi</h3>
+						<p class="text-gray-500 text-sm leading-relaxed">Un rapport confidentiel est généré pour alerter les bonnes personnes.</p>
+					</article>
 				</div>
-			</section>
+			</div>
+		</section>
 
 		{# RENCONTRE LUMI #}
-		<section class="py-16 px-6 bg-[#F5F2FA]">
-			<div class="max-w-[1280px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+		<section id="rencontre-lumi" aria-labelledby="rencontre-lumi-title" class="py-24 px-8 bg-[#F4ECFF]">
+			<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
 
-				<div class="w-full lg:w-1/2">
-					<h2 class="font-poppins font-bold text-[52px] leading-[1.05] text-[#4B4B57]">
+				<article>
+					<h2 id="rencontre-lumi-title" class="font-poppins font-bold text-4xl md:text-5xl leading-tight text-[#4B4B57] mb-6">
 						Rencontre
 						<span class="text-[#5B21B6]">LUMI</span>, ton allié
-					</h2>
-					<h2 class="font-poppins font-bold text-[52px] leading-[1.05] mb-6">
-						<span class="text-[#1F7A73]">discret</span>
-						<span class="text-[#5B21B6]">
-							💜</span>
+						<br>
+						<span class="text-[#20736D]">discret</span>
+						<span class="text-[#4A157D]">💜</span>
 					</h2>
 
-					<p class="text-[20px] leading-[1.35] text-[#7C5BA6] mb-8">
-						ECHO est une intelligence artificielle conçue pour écouter, comprendre et accompagner les élèves victimes de harcèlement scolaire. Disponible 24h/24, sans jugement.
+					<p class="text-xl leading-relaxed text-[#7C5BA6] mb-10 max-w-xl">
+						ECHO est une intelligence artificielle conçue pour écouter, comprendre et accompagner
+																								                les élèves victimes de harcèlement scolaire. Disponible 24h/24, sans jugement.
 					</p>
 
-					<div class="flex flex-wrap gap-3 max-w-[550px]">
-						<span class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold whitespace-nowrap">
+					<ul class="flex flex-wrap gap-4 max-w-xl">
+						<li class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold">
 							Détecte le harcèlement
-						</span>
-						<span class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold whitespace-nowrap">
+						</li>
+						<li class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold">
 							Jamais de jugement
-						</span>
-						<span class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold whitespace-nowrap">
+						</li>
+						<li class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold">
 							Disponible la nuit
-						</span>
-						<div class="w-full">
-							<span class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold inline-block whitespace-nowrap">
-								Rapport anonyme auto
-							</span>
-						</div>
-					</div>
-				</div>
+						</li>
+						<li class="bg-[#D8B4FE] text-[#5B21B6] px-5 py-3 rounded-full text-sm font-semibold">
+							Rapport anonyme auto
+						</li>
+					</ul>
+				</article>
 
-				<div class="flex justify-center shrink-0 lg:w-1/2">
-					<div class="w-[660px] h-[640px] max-h-[75vh] rounded-[42px] border-4 border-[#5B21B6] bg-white shadow-[0_12px_40px_rgba(91,33,182,0.2)] overflow-hidden flex flex-col">
-						<img src="{{ asset('images/MOBILE-ECHO.png') }}" alt="ECHO Mobile" class="w-full h-full object-cover object-top">
+				<aside class="flex justify-center lg:justify-end">
+					<div class="w-[300px] md:w-[340px] rounded-[34px] border-4 border-[#5B21B6] bg-white shadow-[0_18px_45px_rgba(91,33,182,0.22)] overflow-hidden">
+						<img src="{{ asset('images/MOBILE-ECHO.png') }}" alt="Aperçu mobile ECHO" class="w-full h-auto block">
 					</div>
-				</div>
+				</aside>
 
 			</div>
 		</section>
 
-		{# CHAQUE PAS COMPTE — version finale #}
-		<section class="relative py-24 px-8 overflow-hidden" style="background: linear-gradient(180deg, rgba(255,228,144,0.13) 0%, rgba(255,141,40,0.13) 100%); background-color: #ffffff;">
+		{# CHAQUE PAS COMPTE #}
+		{% if app.user %}
+			<section id="chaque-pas" aria-labelledby="points-title" class="relative py-24 px-8 overflow-hidden bg-[#FFF8F1]">
+				<div class="max-w-7xl mx-auto flex flex-col items-center">
+					<h2 id="points-title" class="font-poppins font-bold text-5xl text-center text-gray-800 mb-3">
+						Chaque pas compte 💛
+					</h2>
 
-			<div class="max-w-7xl mx-auto justify-center items-center flex flex-col">
-				<h2 class="font-poppins font-bold text-5xl text-center text-gray-800 mb-3">
-					Chaque pas compte💛
-				</h2>
-				<p class="text-center text-[#7C5BA6] text-lg mb-14 max-w-[480px] mx-auto">
-					Gagne des points de courage et débloque des badges en prenant soin de toi. Chaque <br> action compte, chaque pas est une victoire.
-				</p>
+					<p class="text-center text-[#7C5BA6] text-lg mb-14 max-w-[520px] mx-auto">
+						Gagne des points de courage et débloque des badges en prenant soin de toi.
+																								                    Chaque action compte, chaque pas est une victoire.
+					</p>
 
-				<div
-					class="flex flex-col md:flex-row items-center justify-center gap-16">
+					<div class="flex flex-col md:flex-row items-center justify-center gap-16">
+						<article class="bg-white rounded-[32px] px-12 py-10 shadow-xl text-center border border-orange-100 min-w-[260px]">
+							<div class="text-5xl mb-4">💛</div>
 
-					{# Cerchio SVG arancione #}
-					<div class="flex flex-col items-center shrink-0">
-						<div
-							class="relative w-48 h-48">
-							{# Glow radiale dietro il cerchio #}
-							<div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(255,141,40,0.15) 0%, transparent 70%);"></div>
-							<svg
-								class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 180 180">
-								{# Traccia di sfondo #}
-								<circle
-								cx="90" cy="90" r="76" fill="none" stroke="rgba(255,141,40,0.15)" stroke-width="13"/>
-								{# Traccia colorata con gradiente #}
-								<defs>
-									<linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-										<stop offset="0%" style="stop-color:#FFB347;stop-opacity:1"/>
-										<stop offset="100%" style="stop-color:#FF8D28;stop-opacity:1"/>
-									</linearGradient>
-								</defs>
-								<circle cx="90" cy="90" r="76" fill="none" stroke="url(#orangeGrad)" stroke-width="13" stroke-dasharray="478" stroke-dashoffset="120" stroke-linecap="round"/>
-							</svg>
-							<div class="absolute inset-0 flex flex-col items-center justify-center">
-								<div class="font-poppins font-bold text-4xl text-gray-800 leading-none">
-									120
-								</div>
-							</div>
-						</div>
-						<div class="grid grid-cols-2 gap-4 lg:gap-6 w-full max-w-[580px]">
-							<div class="bg-white rounded-[32px] p-6 lg:p-8 shadow-sm border border-gray-100/50 flex flex-col justify-between items-start min-h-[160px] lg:min-h-[190px] hover:scale-[1.02] transition-transform">
-								<div class="text-3xl lg:text-4xl mb-4">⭐</div>
-								<div>
-									<div class="font-inter font-bold text-sm lg:text-lg text-[#2D2D2D]">Premier Pas</div>
-									<div class="text-[11px] lg:text-sm text-gray-400 mt-1 font-normal">Tu as osé parler</div>
-								</div>
-							</div>
-							<div class="bg-white rounded-[32px] p-6 lg:p-8 shadow-sm border border-gray-100/50 flex flex-col justify-between items-start min-h-[160px] lg:min-h-[190px] hover:scale-[1.02] transition-transform">
-								<div class="text-3xl lg:text-4xl mb-4">🦁</div>
-								<div>
-									<div class="font-inter font-bold text-sm lg:text-lg text-[#2D2D2D]">Courage</div>
-									<div class="text-[11px] lg:text-sm text-gray-400 mt-1 font-normal">Tu affrontes tes peurs</div>
-								</div>
-							</div>
-							<div class="bg-white rounded-[32px] p-6 lg:p-8 shadow-sm border border-gray-100/50 flex flex-col justify-between items-start min-h-[160px] lg:min-h-[190px] hover:scale-[1.02] transition-transform">
-								<div class="text-3xl lg:text-4xl mb-4">🤝</div>
-								<div>
-									<div class="font-inter font-bold text-sm lg:text-lg text-[#2D2D2D]">Pas Seul·e</div>
-									<div class="text-[11px] lg:text-sm text-gray-400 mt-1 font-normal">Tu as demandé de l'aide</div>
-								</div>
-							</div>
-							<div class="bg-white rounded-[32px] p-6 lg:p-8 shadow-sm border border-gray-100/50 flex flex-col justify-between items-start min-h-[160px] lg:min-h-[190px] hover:scale-[1.02] transition-transform">
-								<div class="text-3xl lg:text-4xl mb-4">🕊️</div>
-								<div>
-									<div class="font-inter font-bold text-sm lg:text-lg text-[#2D2D2D]">Voix Libre</div>
-									<div class="text-[11px] lg:text-sm text-gray-400 mt-1 font-normal">Tu t'es exprimé·e</div>
-								</div>
-							</div>
+							<p class="text-6xl font-black text-[#1E1B4B]">
+								{{ totalPoints|default(0) }}
+							</p>
+
+							<p class="text-gray-500 font-bold mt-2">
+								pts Courage
+							</p>
+
+							<p class="text-sm text-gray-400 mt-4">
+								Continue comme ça, chaque action compte.
+							</p>
+						</article>
+
+						<div class="grid grid-cols-2 gap-5 w-full max-w-[480px]">
+							{% for badge in badges|slice(0,4) %}
+								<article class="bg-white rounded-2xl p-6 shadow-sm min-h-[140px]">
+									<div class="text-4xl mb-4">
+										{{ badge.icone }}
+									</div>
+
+									<h3 class="font-poppins font-bold text-base text-gray-800">
+										{{ badge.nom }}
+									</h3>
+
+									<p class="text-sm text-gray-400 mt-1">
+										{{ badge.description }}
+									</p>
+								</article>
+							{% else %}
+								<p class="col-span-2 text-center text-gray-500">
+									Aucun badge obtenu pour le moment.
+								</p>
+							{% endfor %}
 						</div>
 					</div>
 				</div>
 			</section>
+		{% endif %}
 
-			{# SECURITE #}
-			<section class="bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] py-16 px-6 md:py-24 md:px-8 text-center" aria-labelledby="security-title">
-				<div class="max-w-7xl mx-auto">
-					<h2 id="security-title" class="font-inter font-bold text-3xl md:text-5xl lg:text-[64px] text-gray-700 mb-4 lg:mb-6 tracking-tight leading-tight lg:leading-none">
-						Ta sécurité avant tout
-					</h2>
-					<p class="text-gray-700 text-sm sm:text-base md:text-xl lg:text-[32px] font-normal md:font-semibold leading-relaxed lg:leading-[46px] mb-12 lg:mb-16 max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto">
-						LUMI a été conçu avec la sécurité et la confidentialité au cœur de chaque décision.
-					</p>
-					<div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 text-left">
-						<div class="bg-white rounded-2xl p-6 lg:p-8 border border-purple-100/40 shadow-sm">
-							<div class="text-2xl lg:text-3xl mb-3 lg:mb-4">🔒</div>
-							<h3 class="font-inter font-bold text-gray-800 text-sm lg:text-base mb-2">Anonymat garanti</h3>
-							<p class="text-gray-500 text-xs lg:text-sm leading-relaxed font-normal">Tes données personnelles sont protégées. Personne ne peut savoir qui tu es sauf si tu le décides.</p>
-						</div>
+		{# SÉCURITÉ #}
+		<section id="securite" aria-labelledby="securite-title" class="py-20 px-8">
+			<div class="max-w-7xl mx-auto">
+				<h2 id="securite-title" class="font-poppins font-bold text-4xl text-center text-[#4A157D] mb-4">
+					Ta sécurité avant tout
+				</h2>
 
-						<div class="bg-white rounded-2xl p-6 shadow-sm min-h-[140px]">
-							<div class="text-4xl mb-4">🧡</div>
-							<div class="font-poppins font-bold text-base text-gray-800">Pas Seul·e</div>
-							<div class="text-sm text-gray-400 mt-1">Tu as demandé de l'aide</div>
-						</div>
+				<p class="text-center text-gray-500 mb-12">
+					LUMI a été conçu avec la sécurité et la confidentialité au cœur de chaque décision.
+				</p>
 
-						<div class="bg-white rounded-2xl p-6 shadow-sm min-h-[140px]">
-							<div class="text-4xl mb-4">🎤</div>
-							<div class="font-poppins font-bold text-base text-gray-800">Voix Libre</div>
-							<div class="text-sm text-gray-400 mt-1">Tu t'es exprimé·e</div>
-						</div>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+					<article class="bg-white rounded-2xl p-8 shadow-sm border border-light">
+						<div class="text-3xl mb-4">🔒</div>
+						<h3 class="font-poppins font-semibold text-lg mb-2">Anonymat garanti</h3>
+						<p class="text-gray-500 text-sm">
+							Tes données personnelles sont protégées. Personne ne peut savoir qui tu es sauf si tu le décides.
+						</p>
+					</article>
 
-					</div>
+					<article class="bg-white rounded-2xl p-8 shadow-sm border border-light">
+						<div class="text-3xl mb-4">⚖️</div>
+						<h3 class="font-poppins font-semibold text-lg mb-2">Cadre légal français</h3>
+						<p class="text-gray-500 text-sm">
+							LUMI respecte la législation française sur la protection des mineurs et le RGPD.
+						</p>
+					</article>
+
+					<article class="bg-white rounded-2xl p-8 shadow-sm border border-light">
+						<div class="text-3xl mb-4">🚨</div>
+						<h3 class="font-poppins font-semibold text-lg mb-2">Alerte en cas de danger</h3>
+						<p class="text-gray-500 text-sm">
+							Si tu es en danger immédiat, ECHO peut alerter les personnes compétentes pour te protéger.
+						</p>
+					</article>
 				</div>
 			</div>
 		</section>
 
-		{# SECURITE #}
-		<section class="py-20 px-8">
-			<div class="max-w-7xl mx-auto">
-				<h2 class="font-poppins font-bold text-4xl text-center text-[#4A157D] mb-4">Ta sécurité avant tout</h2>
-				<p class="text-center text-gray-500 mb-12">LUMI a été conçu avec la sécurité et la confidentialité au cœur de chaque décision.</p>
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-					<div class="bg-white rounded-2xl p-8 shadow-sm border border-light">
-						<div class="text-3xl mb-4">🔒</div>
-						<h3 class="font-poppins font-semibold text-lg mb-2">Anonymat garanti</h3>
-						<p class="text-gray-500 text-sm">Tes données personnelles sont protégées. Personne ne peut savoir qui tu es sauf si tu le décides.</p>
-					</div>
-					<div class="bg-white rounded-2xl p-8 shadow-sm border border-light">
-						<div class="text-3xl mb-4">⚖️</div>
-						<h3 class="font-poppins font-semibold text-lg mb-2">Cadre légal français</h3>
-						<p class="text-gray-500 text-sm">LUMI respecte la législation française sur la protection des mineurs et le RGPD.</p>
-					</div>
-					<div class="bg-white rounded-2xl p-8 shadow-sm border border-light">
-						<div class="text-3xl mb-4">🚨</div>
-						<h3 class="font-poppins font-semibold text-lg mb-2">Alerte en cas de danger</h3>
-						<p class="text-gray-500 text-sm">Si tu es en danger immédiat, ECHO peut alerter les personnes compétentes pour te protéger.</p>
-					</div>
-					<h2 id="cta-title" class="font-inter font-bold text-3xl md:text-5xl lg:text-[64px] text-[#4A157D] mb-4 lg:mb-6 tracking-tight leading-tight lg:leading-none max-w-5xl mx-auto">
-						Prêt·e à reprendre
-						<span class="text-[#20736D]">ta voix ?</span>
-					</h2>
-					<p class="text-gray-500 text-sm sm:text-base md:text-xl lg:text-[32px] font-normal md:font-semibold leading-relaxed lg:leading-[46px] mb-12 lg:mb-16 max-w-sm md:max-w-3xl lg:max-w-5xl mx-auto">
-						Que tu veuilles simplement parler ou faire un signalement, ECHO est là pour toi. Tu n'as pas besoin de donner ton nom.
-					</p>
-					<div class="flex flex-col sm:flex-row justify-center gap-4 lg:gap-6 w-full sm:w-auto px-4 sm:px-0">
-						<a href="{{ path('app_login') }}" class="bg-[#A855F7] text-white flex items-center justify-center font-semibold hover:opacity-90 transition shadow-md focus:outline-none focus:ring-2 focus:ring-[#A855F7] focus:ring-offset-2
-								                        w-full h-14 text-base rounded-[24px]
-								                        sm:w-[220px] sm:h-14 sm:text-sm
-								                        md:w-[260px] md:h-16 md:text-lg md:rounded-[32px]
-								                        lg:w-[320px] lg:h-[80px] lg:text-[32px] lg:rounded-[50px]">
-							💬 Parler à ECHO
-						</a>
-						<a href="{{ path('app_chat_anonymous') }}" class="border-2 border-[#20736D] text-[#20736D] bg-white/50 flex items-center justify-center font-semibold hover:bg-white transition shadow-sm focus:outline-none focus:ring-2 focus:ring-[#20736D] focus:ring-offset-2
-								                        w-full h-14 text-base rounded-[24px]
-								                        sm:w-[220px] sm:h-14 sm:text-sm
-								                        md:w-[260px] md:h-16 md:text-lg md:rounded-[32px]
-								                        lg:w-[320px] lg:h-[80px] lg:text-[32px] lg:rounded-[50px]">
-							Rester anonyme
-						</a>
-					</div>
-				</div>
-			</div>
-		</footer>
+		{# CTA FINAL #}
+		<section id="cta-final" aria-labelledby="cta-final-title" class="py-24 px-8 bg-[#E8D9FF]">
 
-	</div>
+			<div class="max-w-5xl mx-auto text-center">
+
+				<div class="w-72 h-72 md:w-[480px] md:h-[480px] mx-auto mb-6">
+					<img src="{{ asset('images/echo.png') }}" alt="ECHO mascotte" class="w-full h-full object-contain animate-float">
+				</div>
+				<h2 id="cta-final-title" class="font-poppins font-bold text-5xl md:text-6xl leading-tight mb-6">
+					<span class="text-[#20736D]">
+						Prêt·e à reprendre
+					</span>
+
+					<span class="text-[#4A157D]">
+						ta voix ?
+					</span>
+				</h2>
+
+				<p class="max-w-3xl mx-auto text-xl text-[#4B4B57] leading-relaxed mb-10">
+					Que tu veuilles simplement parler ou faire un signalement,
+															            ECHO est là pour toi.
+
+					<br class="hidden md:block">
+
+					Tu n'as pas besoin de donner ton nom.
+				</p>
+
+				<div class="flex flex-wrap justify-center gap-5">
+
+					<a href="{{ path('app_chat') }}" class="bg-[#A855F7] text-white px-10 py-4 rounded-full font-bold text-lg shadow-md hover:opacity-90 transition">
+						Parler à ECHO 💜
+					</a>
+
+					<a href="{{ path('app_chat_anonymous') }}" class="bg-white border-2 border-[#20736D] text-[#20736D] px-10 py-4 rounded-full font-bold text-lg hover:bg-[#F8FFF8] transition">
+						Rester anonyme
+					</a>
+
+				</div>
+
+			</div>
+
+		</section>
+	</main>
 
 {% endblock %}
