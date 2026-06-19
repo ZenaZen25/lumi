@@ -9,10 +9,11 @@
 		</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-	
 
-			{% block stylesheets %}
-		<link rel="stylesheet" href="{{ asset('app.css') }}"> {% endblock %}
+
+		{% block stylesheets %}
+			<link rel="stylesheet" href="{{ asset('app.css') }}">
+		{% endblock %}
 
 		{% block javascripts %}
 			{% block importmap %}
@@ -29,14 +30,25 @@
 	</head>
 
 
+
+{# J’ai ajouté un lien d’évitement dans le layout principal. Cela permet aux utilisateurs qui naviguent au clavier ou avec un lecteur d’écran d’aller directement au contenu principal sans devoir parcourir toute la navigation. C’est une amélioration d’accessibilité liée au critère WCAG 2.4.1. #}
+
+
 	<body class="bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] min-h-screen flex flex-col">
+
+		<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 bg-white text-[#1E1B4B] px-4 py-2 rounded-lg shadow">
+			Aller au contenu principal
+		</a>
+
 		{% block header %}
 			{% include '_partials/_header.html.twig' %}
 		{% endblock %}
-		<main class="flex-grow"> {% block body %}{% endblock %}
+
+		<main id="main-content" class="flex-grow"> {% block body %}{% endblock %}
 			</main>
 
 			{% include '_partials/_footer.html.twig' %}
 
 		</body>
+
 	</html>

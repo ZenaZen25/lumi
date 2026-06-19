@@ -77,15 +77,15 @@
 				</div>
 			</div>
 
-			{# Zone messages scrollable #}
 			{# ================= ZONE CENTRALE SCROLLABLE  ================= #}
-			<div id="chat-messages" data-chat-target="chatMessages" class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 flex flex-col w-full">
+
+			<div id="chat-messages" data-chat-target="chatMessages" aria-live="polite" aria-atomic="false" class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 flex flex-col w-full">
 
 				{% if messages is empty %}
 					<div id="welcome-screen" data-chat-target="welcomeScreen" class="w-full max-w-xl flex flex-col items-center justify-center gap-6 -mt-8 mx-auto">
 
 						<div class="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[440px] lg:h-[440px]">
-							<img src="{{ asset('images/chat.png') }}" alt="" class="w-full h-full object-contain animate-float relative z-10"/>
+							<img src="{{ asset('images/chat.png') }}" alt="Mascotte ECHO" class="w-full h-full object-contain animate-float relative z-10"/>
 						</div>
 
 						<div class="text-center -mt-16 md:-mt-24">
@@ -150,7 +150,7 @@
 							</div>
 						{% else %}
 							<div class="flex justify-start items-end gap-3 w-full mb-1">
-								<img src="{{ asset('images/logo.png') }}" class="w-9 h-9 object-contain shrink-0 mb-1" alt="ECHO"/>
+								<img src="{{ asset('images/logo.png') }}" class="w-9 h-9 object-contain shrink-0 mb-1" alt="" aria-hidden="true"/>
 								<div class="flex flex-col max-w-[70%] md:max-w-[60%]">
 									<div class="bg-white border border-purple-100/60 rounded-3xl rounded-bl-sm py-3.5 px-6 shadow-sm text-[#1E1B4B] text-sm md:text-base font-semibold tracking-wide leading-relaxed break-words">
 										{{ msg.content }}
@@ -168,7 +168,7 @@
 				</div>
 
 				<div id="typing-indicator" data-chat-target="typingIndicator" class="hidden flex justify-start gap-3 items-end mt-6 max-w-4xl mx-auto w-full px-4 md:px-8">
-					<img src="{{ asset('images/logo.png') }}" class="w-9 h-9 object-contain shrink-0" alt="ECHO"/>
+					<img src="{{ asset('images/logo.png') }}" class="w-9 h-9 object-contain shrink-0" alt="" aria-hidden="true"/>
 					<div class="bg-white rounded-3xl rounded-bl-sm py-3.5 px-6 shadow-sm flex items-center justify-center">
 						<div class="flex gap-1.5 items-center h-5">
 							<span class="w-2 h-2 bg-[#A855F7] rounded-full animate-bounce [animation-delay:0ms]"></span>
@@ -191,8 +191,7 @@
 					<div class="flex-1 relative flex items-center">
 						<input id="chat-input" data-chat-target="chatInput" data-action="keydown->chat#handleKey" type="text" placeholder="Ecris ton message ..." data-url="{{ path('app_chat_message') }}" data-csrf-token="{{ csrf_token('chat_message') }}" class="w-full h-16 bg-white border-2 border-purple-100 rounded-full pl-6 pr-20 text-base font-semibold text-[#1E1B4B] placeholder:text-gray-400 shadow-sm focus:outline-none focus:border-primary-light focus:ring-2 focus:ring-primary-light/10 transition-all"/>
 
-
-						<button id="send-btn" data-chat-target="sendBtn" data-action="click->chat#sendMessage" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#A855F7] flex items-center justify-center rounded-full hover:bg-[#9333EA] shadow-md transition-all duration-200" style="width: 48px; height: 48px;">
+						<button id="send-btn" aria-label="Envoyer le message" data-chat-target="sendBtn" data-action="click->chat#sendMessage" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-light flex items-center justify-center rounded-full hover:bg-[#9333EA] shadow-md transition-all duration-200" style="width: 48px; height: 48px;">
 							<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white pl-0.5" fill="currentColor" viewbox="0 0 24 24">
 								<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
 							</svg>
