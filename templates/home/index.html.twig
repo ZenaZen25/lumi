@@ -5,7 +5,7 @@
 
 {% block body %}
 
-	<main
+	<section
 		class="min-h-screen bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA]">
 
 		{# HERO #}
@@ -18,7 +18,7 @@
 						· Gratuit · Sécurisé
 					</div>
 
-					<h1 class="font-poppins font-bold text-5xl md:text-6xl mb-6 leading-tight">
+					<h1 class="font-poppins font-bold text-4xl md:text-6xl mb-6 leading-tight">
 						<span class="text-[#20736D]">Tu n'es pas</span>
 						<span class="text-[#4A157D]">
 							seul·e.</span>
@@ -185,7 +185,7 @@
 								pts Courage
 							</p>
 
-							<p class="text-sm text-gray-400 mt-4">
+							<p class="text-sm text-gray-600 mt-4">
 								Continue comme ça, chaque action compte.
 							</p>
 						</article>
@@ -201,7 +201,7 @@
 										{{ badge.nom }}
 									</h3>
 
-									<p class="text-sm text-gray-400 mt-1">
+									<p class="text-sm text-gray-600 mt-1">
 										{{ badge.description }}
 									</p>
 								</article>
@@ -263,7 +263,7 @@
 				<div class="w-72 h-72 md:w-[480px] md:h-[480px] mx-auto mb-6">
 					<img src="{{ asset('images/echo.png') }}" alt="ECHO mascotte" class="w-full h-full object-contain animate-float">
 				</div>
-				<h2 id="cta-final-title" class="font-poppins font-bold text-5xl md:text-6xl leading-tight mb-6">
+				<h2 id="cta-final-title" class="font-poppins font-bold text-4xl md:text-6xl leading-tight mb-6">
 					<span class="text-[#20736D]">
 						Prêt·e à reprendre
 					</span>
@@ -297,6 +297,8 @@
 			</div>
 
 		</section>
-	</main>
+
+
+	</section>
 
 {% endblock %}

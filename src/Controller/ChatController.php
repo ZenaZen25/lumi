@@ -203,6 +203,7 @@ PROMPT;
                     // Messages envoyés au modèle :
                     // - system : règle le comportement d'ECHO
                     // - user : contient le message de l'utilisateur
+                    
                     'messages' => [
                         ['role' => 'system', 'content' => $systemPrompt],
                         ['role' => 'user',   'content' => $userText],
