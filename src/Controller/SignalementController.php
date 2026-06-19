@@ -20,6 +20,7 @@ class SignalementController extends AbstractController
     /**
      * Affiche le formulaire de signalement.
      */
+    
     #[Route('/signalement', name: 'app_signalement')]
     public function index(): Response
     {
@@ -36,6 +37,7 @@ class SignalementController extends AbstractController
      * 4. attribue des points Courage ;
      * 5. redirige vers la page de confirmation.
      */
+
     #[Route('/signalement/submit', name: 'app_signalement_submit', methods: ['POST'])]
     public function submit(Request $request, EntityManagerInterface $em): Response
     {
@@ -220,17 +222,7 @@ class SignalementController extends AbstractController
         );
     }
 
-    /**
-     * Affiche la page de confirmation
-     * après l'envoi d'un signalement.
-     */
-    // #[Route('/signalement/confirmation', name: 'app_signalement_confirmation')]
-    // public function confirmation(): Response
-    // {
-    //     return $this->render(
-    //         'signalement/confirmation.html.twig'
-    //     );
-    // }
+    
 
     #[Route('/signalement/confirmation', name: 'app_signalement_confirmation')]
     public function confirmation(): Response
@@ -247,6 +239,7 @@ class SignalementController extends AbstractController
             'signalement/confirmation.html.twig',
             [
                 'totalPoints' => $totalPoints,
+                'isLoggedIn' => $this->getUser() !== null,
             ]
         );
     }
