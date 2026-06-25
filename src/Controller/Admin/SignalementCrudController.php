@@ -12,6 +12,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+
 
 class SignalementCrudController extends AbstractCrudController
 {
@@ -39,10 +41,20 @@ class SignalementCrudController extends AbstractCrudController
         return [
             TextField::new('type', 'Type'),
             TextField::new('zone', 'Zone'),
-            TextField::new('severite', 'Sévérité'),
+            ChoiceField::new('severite', 'Sévérité')
+                ->setChoices([
+                    'Faible' => 'low',
+                    'Moyenne' => 'medium',
+                    'Élevée' => 'high',
+                ]),
             TextareaField::new('description', 'Description'),
             BooleanField::new('estRecurrent', 'Récurrent'),
-            TextField::new('statut', 'Statut'),
+            ChoiceField::new('statut', 'Statut')
+                ->setChoices([
+                    'Nouveau' => 'nouveau',
+                    'En cours' => 'en_cours',
+                    'Traité' => 'traite',
+                ]),
             TextField::new('anonymousToken', 'Token anonyme')->hideOnIndex(),
             DateTimeField::new('createdAt', 'Créé le'),
             DateTimeField::new('updatedAt', 'Mis à jour le')->hideOnIndex(),

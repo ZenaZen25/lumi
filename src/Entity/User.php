@@ -329,7 +329,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     // ---- UserInterface ----
 
-   
+
 
     public function getUserIdentifier(): string
     {
@@ -352,10 +352,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
+
+
     public function setEmail(string $email): static
     {
         $this->email = $email;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->prenom ?? $this->email ?? 'Utilisateur #' . $this->id;
     }
 }

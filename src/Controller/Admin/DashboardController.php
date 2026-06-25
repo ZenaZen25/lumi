@@ -37,6 +37,7 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Gestion');
 
+        // Visible ADMIN + REFERENT
         yield MenuItem::linkToUrl(
             'Signalements',
             'fa fa-triangle-exclamation',
@@ -49,22 +50,23 @@ class DashboardController extends AbstractDashboardController
             $adminUrlGenerator->setController(AlerteCrudController::class)->generateUrl()
         );
 
+        // Visible seulement ADMIN
         yield MenuItem::linkToUrl(
             'Utilisateurs',
             'fa fa-users',
             $adminUrlGenerator->setController(UserCrudController::class)->generateUrl()
-        );
+        )->setPermission('ROLE_ADMIN');
 
         yield MenuItem::linkToUrl(
             'Badges',
             'fa fa-award',
             $adminUrlGenerator->setController(BadgeCrudController::class)->generateUrl()
-        );
+        )->setPermission('ROLE_ADMIN');
 
         yield MenuItem::linkToUrl(
             'Établissements',
             'fa fa-school',
             $adminUrlGenerator->setController(EtablissementCrudController::class)->generateUrl()
-        );
+        )->setPermission('ROLE_ADMIN');
     }
 }

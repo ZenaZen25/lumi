@@ -46,10 +46,21 @@ class LumiAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        return new RedirectResponse($this->urlGenerator->generate('app_home'));
-    }
+        $user = $token->getUser();
 
+        if (
+            in_array('ROLE_ADMIN', $user->getRoles(), true)
+            || in_array('ROLE_REFERENT', $user->getRoles(), true)
+        ) {
+            return new RedirectResponse(
+                $this->urlGenerator->generate('admin')
+            );
+        }
+
+        return new RedirectResponse(
+            $this->urlGenerator->generate('app_home')
+        );
+    }
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
