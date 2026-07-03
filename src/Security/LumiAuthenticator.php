@@ -28,6 +28,12 @@ class LumiAuthenticator extends AbstractLoginFormAuthenticator
     {
         $email = $request->getPayload()->getString('_username');
 
+        // Sauvegarde le type de connexion choisi : élève ou admin/référent
+        $request->getSession()->set(
+            'login_type',
+            $request->request->get('login_type', 'eleve')
+        );
+
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
         return new Passport(
@@ -42,25 +48,41 @@ class LumiAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        $user = $token->getUser();
+        $roles = $user->getRoles();
+        $loginType = $request->getSession()->get('login_type', 'eleve');
+
+        // Si l'utilisateur a choisi "Élève", il doit avoir ROLE_ELEVE
+        if ($loginType === 'eleve' && !in_array('ROLE_ELEVE', $roles, true)) {
+            $request->getSession()->invalidate();
+
+            return new RedirectResponse($this->urlGenerator->generate('app_login'));
+        }
+
+        // Si l'utilisateur a choisi "Référent/Admin", il doit être référent ou admin
+        if ($loginType === 'admin' && !(
+            in_array('ROLE_ADMIN', $roles, true)
+            || in_array('ROLE_REFERENT', $roles, true)
+        )) {
+            $request->getSession()->invalidate();
+
+            return new RedirectResponse($this->urlGenerator->generate('app_login'));
+        }
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        $user = $token->getUser();
-
         if (
-            in_array('ROLE_ADMIN', $user->getRoles(), true)
-            || in_array('ROLE_REFERENT', $user->getRoles(), true)
+            in_array('ROLE_ADMIN', $roles, true)
+            || in_array('ROLE_REFERENT', $roles, true)
         ) {
-            return new RedirectResponse(
-                $this->urlGenerator->generate('admin')
-            );
+            return new RedirectResponse($this->urlGenerator->generate('admin'));
         }
 
-        return new RedirectResponse(
-            $this->urlGenerator->generate('app_home')
-        );
+        return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
+
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);

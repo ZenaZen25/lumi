@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"  class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +8,7 @@
 			{% endblock %}
 		</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 		{% block stylesheets %}
 			<link rel="stylesheet" href="{{ asset('app.css') }}">
@@ -30,8 +29,7 @@
 	</head>
 
 
-
-{# J’ai ajouté un lien d’évitement dans le layout principal. Cela permet aux utilisateurs qui naviguent au clavier ou avec un lecteur d’écran d’aller directement au contenu principal sans devoir parcourir toute la navigation. C’est une amélioration d’accessibilité liée au critère WCAG 2.4.1. #}
+	{# J’ai ajouté un lien d’évitement dans le layout principal. Cela permet aux utilisateurs qui naviguent au clavier ou avec un lecteur d’écran d’aller directement au contenu principal sans devoir parcourir toute la navigation. C’est une amélioration d’accessibilité liée au critère WCAG 2.4.1. #}
 
 
 	<body class="bg-gradient-to-b from-[#F0EEFF] to-[#F1EAFA] min-h-screen flex flex-col">

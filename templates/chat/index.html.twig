@@ -54,8 +54,15 @@
 			</div>
 		</aside>
 
-		<section data-controller="chat" class="flex-1 flex flex-col min-w-0">
 
+		{#
+				    Contrôleur Stimulus du chat.
+				
+				    Les valeurs URL et CSRF sont transmises à JavaScript
+				    afin d'envoyer les messages de manière sécurisée
+				    vers le contrôleur Symfony.
+				#}
+		<section data-controller="chat" data-chat-url-value="{{ path('app_chat_message') }}" data-chat-csrf-token-value="{{ csrf_token('chat_message') }}" class="flex-1 flex flex-col min-w-0">
 			<div class="w-full shrink-0 z-10 px-3 sm:px-4 mt-3 sm:mt-6">
 				<div class="bg-white rounded-3xl shadow-sm py-4 sm:py-5 px-4 sm:px-6 w-full md:max-w-[98%] lg:max-w-[96%] mx-auto flex items-center justify-between">
 					<div class="flex flex-col justify-center">
@@ -182,8 +189,16 @@
 						<span class="hidden sm:inline">Signaler</span>
 					</button>
 
+
+					{#
+					    Champ de saisie du chat.
+					
+					    Le contrôleur Stimulus récupère automatiquement
+					    ce champ grâce au target "chatInput".
+					#}
+
 					<div class="flex-1 relative flex items-center">
-						<input id="chat-input" data-chat-target="chatInput" data-action="keydown->chat#handleKey" type="text" placeholder="Écris ton message ..." data-url="{{ path('app_chat_message') }}" data-csrf-token="{{ csrf_token('chat_message') }}" class="w-full h-14 sm:h-16 bg-white border-2 border-purple-100 rounded-full pl-5 sm:pl-6 pr-16 sm:pr-20 text-sm sm:text-base font-semibold text-[#1E1B4B] placeholder:text-gray-600 shadow-sm focus:outline-none focus:border-primary-light focus:ring-2 focus:ring-primary-light/10 transition-all"/>
+						<input id="chat-input" data-chat-target="chatInput" data-action="keydown->chat#handleKey" type="text" placeholder="Écris ton message ..." class="w-full h-14 sm:h-16 bg-white border-2 border-purple-100 rounded-full pl-5 sm:pl-6 pr-16 sm:pr-20 text-sm sm:text-base font-semibold text-[#1E1B4B] placeholder:text-gray-600 shadow-sm focus:outline-none focus:border-primary-light focus:ring-2 focus:ring-primary-light/10 transition-all"/>
 
 						<button id="send-btn" aria-label="Envoyer le message" data-chat-target="sendBtn" data-action="click->chat#sendMessage" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-light flex items-center justify-center rounded-full hover:bg-[#9333EA] shadow-md transition-all duration-200 w-10 h-10 sm:w-12 sm:h-12">
 							<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5 text-white pl-0.5" fill="currentColor" viewbox="0 0 24 24">

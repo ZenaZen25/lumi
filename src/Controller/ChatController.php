@@ -93,6 +93,10 @@ final class ChatController extends AbstractController
         // Récupère le contenu JSON envoyé par le fetch JavaScript
         $data = json_decode($request->getContent(), true);
 
+        if (!$this->isCsrfTokenValid('chat_message', $data['_token'] ?? '')) {
+            return $this->json(['error' => 'Token CSRF invalide'], 403);
+        }
+
         // Récupère le message de l'utilisateur et supprime les espaces inutiles
         $userText = trim($data['message'] ?? '');
 
@@ -153,7 +157,7 @@ final class ChatController extends AbstractController
         // Ce prompt définit le rôle, le ton et les règles de sécurité d'ECHO.
         // Il oblige aussi le modèle IA à répondre en JSON.
         //
-        
+
         $systemPrompt = <<<PROMPT
 Tu es ECHO, le compagnon bienveillant et empathique de la plateforme LUMI.
 
@@ -300,7 +304,7 @@ PROMPT;
             // Décode la réponse JSON attendue :
             // {"message": "...", "alert": false, "severite": "low"}
             $decoded = json_decode($responseText, true);
-
+           
             // Si la réponse est bien un JSON valide
             if (json_last_error() === JSON_ERROR_NONE && isset($decoded['message'])) {
                 $echoText = $decoded['message'];
