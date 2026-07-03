@@ -57,13 +57,11 @@
 					<input type="hidden" id="login_type" name="login_type" value="eleve">
 
 					<div class="mb-4">
-						<label for="username" class="block text-sm font-semibold text-gray-700 mb-2">
 
 
 							<label for="username" class="block text-sm font-semibold text-gray-700 mb-2">
 								Adresse e-mail
 							</label>
-						</label>
 
 						<input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="ex. Zena" class="w-full border border-gray-200 rounded-2xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#A855F7] bg-gray-50" autocomplete="username" {% if error %} aria-describedby="error-msg" {% endif %}>
 					</div>
@@ -87,9 +85,9 @@
 					</a>
 				</div>
 
-				<p class="text-center text-base text-gray-600 mt-2">
+				<a class="text-center text-base text-gray-600 mt-2">
 					Crée un compte élève
-				</p>
+				</a>
 			</div>
 		</section>
 	</div>
