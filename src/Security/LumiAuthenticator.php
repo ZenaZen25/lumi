@@ -26,16 +26,22 @@ class LumiAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
+        // Récupère l'email saisi dans le formulaire de connexion.
         $email = $request->getPayload()->getString('_username');
 
-        // Sauvegarde le type de connexion choisi : élève ou admin/référent
+        // Sauvegarde en session le type de connexion choisi :
+        // "eleve" ou "admin" pour la partie Référent/Admin.
         $request->getSession()->set(
             'login_type',
             $request->request->get('login_type', 'eleve')
         );
 
+        // Sauvegarde le dernier email saisi pour pouvoir le réafficher
+        // dans le formulaire en cas d'erreur de connexion.
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
+        // Crée le passeport d'authentification Symfony :
+        // utilisateur + mot de passe + protection CSRF + remember me.
         return new Passport(
             new UserBadge($email),
             new PasswordCredentials($request->getPayload()->getString('_password')),
@@ -48,18 +54,25 @@ class LumiAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        // Récupère l'utilisateur connecté et ses rôles Symfony.
         $user = $token->getUser();
         $roles = $user->getRoles();
+
+        // Récupère le type de connexion choisi dans le formulaire.
         $loginType = $request->getSession()->get('login_type', 'eleve');
 
-        // Si l'utilisateur a choisi "Élève", il doit avoir ROLE_ELEVE
+        // Si l'utilisateur choisit la connexion "Élève",
+        // il doit obligatoirement avoir le rôle ROLE_ELEVE.
+        // Sinon, on annule la session et on le renvoie vers la page de connexion.
         if ($loginType === 'eleve' && !in_array('ROLE_ELEVE', $roles, true)) {
             $request->getSession()->invalidate();
 
             return new RedirectResponse($this->urlGenerator->generate('app_login'));
         }
 
-        // Si l'utilisateur a choisi "Référent/Admin", il doit être référent ou admin
+        // Si l'utilisateur choisit la connexion "Référent/Admin",
+        // il doit avoir ROLE_REFERENT ou ROLE_ADMIN.
+        // Sinon, on annule la session et on le renvoie vers la page de connexion.
         if ($loginType === 'admin' && !(
             in_array('ROLE_ADMIN', $roles, true)
             || in_array('ROLE_REFERENT', $roles, true)
@@ -69,22 +82,30 @@ class LumiAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($this->urlGenerator->generate('app_login'));
         }
 
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
-        }
-
-        if (
-            in_array('ROLE_ADMIN', $roles, true)
-            || in_array('ROLE_REFERENT', $roles, true)
-        ) {
+        // Redirection automatique selon le rôle réel de l'utilisateur.
+        // Un administrateur est envoyé vers le dashboard complet EasyAdmin.
+        if (in_array('ROLE_ADMIN', $roles, true)) {
             return new RedirectResponse($this->urlGenerator->generate('admin'));
         }
 
+        // Un référent est envoyé vers son espace dédié.
+        if (in_array('ROLE_REFERENT', $roles, true)) {
+            return new RedirectResponse($this->urlGenerator->generate('referent'));
+        }
+
+        // Un élève est envoyé vers sa page profil.
+        if (in_array('ROLE_ELEVE', $roles, true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_profil'));
+        }
+
+        // Sécurité par défaut : si aucun rôle reconnu,
+        // l'utilisateur est renvoyé vers la page d'accueil.
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
     protected function getLoginUrl(Request $request): string
     {
+        // Route utilisée par Symfony quand l'utilisateur doit se connecter.
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 }

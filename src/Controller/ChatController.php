@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\User;
 
 final class ChatController extends AbstractController
 {
@@ -65,8 +66,12 @@ final class ChatController extends AbstractController
 
         // Récupère le prénom si l'utilisateur est connecté,
         // sinon on affiche "toi"
-        $prenom = $this->getUser()?->getPrenom() ?? 'toi';
+        // $prenom = $this->getUser()?->getPrenom() ?? 'toi';
 
+        /** @var User|null $user */
+        $user = $this->getUser();
+
+        $prenom = $user?->getPrenom() ?? 'toi';
         // Envoie les données à la vue Twig
         return $this->render('chat/index.html.twig', [
             'messages'     => $messages,
@@ -304,7 +309,7 @@ PROMPT;
             // Décode la réponse JSON attendue :
             // {"message": "...", "alert": false, "severite": "low"}
             $decoded = json_decode($responseText, true);
-           
+
             // Si la réponse est bien un JSON valide
             if (json_last_error() === JSON_ERROR_NONE && isset($decoded['message'])) {
                 $echoText = $decoded['message'];
@@ -358,18 +363,21 @@ PROMPT;
             $conversation->setHasAlert(true);
 
             // Récupère l'établissement de l'utilisateur connecté
-            $etablissement = $this->getUser()?->getEtablissement();
+            // $etablissement = $this->getUser()?->getEtablissement();
 
             // Une alerte automatique est créée uniquement
             // si un établissement est disponible
-            if ($etablissement) {
+            if ($isAlert && !$conversation->isHasAlert()) {
+                // Évite de créer plusieurs alertes pour la même conversation
+                $conversation->setHasAlert(true);
+
                 $signalement = new Signalement();
 
                 $signalement->setType('chat_automatique');
                 $signalement->setZone('chat_echo');
                 $signalement->setSeverite($severite);
 
-                // On garde le message original comme preuve/context
+                // On garde le message original comme preuve / contexte
                 $signalement->setDescription(
                     '⚠️ Danger détecté par ECHO. Message : ' . $userText
                 );
@@ -379,9 +387,6 @@ PROMPT;
                 $signalement->setAnonymousToken($session->getId());
                 $signalement->setCreatedAt(new \DateTimeImmutable());
                 $signalement->setUpdatedAt(new \DateTime());
-
-                // Rattachement à l'établissement
-                $signalement->setEtablissement($etablissement);
 
                 $em->persist($signalement);
                 $em->flush();
