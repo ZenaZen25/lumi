@@ -15,7 +15,11 @@ security:
     main:
       lazy: true
       provider: app_user_provider
-      custom_authenticator: App\Security\LumiAuthenticator
+      form_login:
+        login_path: app_login
+        check_path: app_login
+        success_handler: App\Security\LoginSuccessHandler
+        enable_csrf: true
       logout:
         path: app_logout
       remember_me:
@@ -37,12 +41,11 @@ security:
     #   access_control:
     # - { path: ^/admin, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }
-  
+
   role_hierarchy:
     ROLE_ADMIN: []
 
   access_control:
-
     - { path: ^/chat, roles: PUBLIC_ACCESS }
     - { path: ^/signalement, roles: PUBLIC_ACCESS }
     - { path: ^/admin, roles: ROLE_ADMIN }
