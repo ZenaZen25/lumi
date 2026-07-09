@@ -383,9 +383,11 @@ PROMPT;
                 );
 
                 $signalement->setStatut('nouveau');
+
                 $signalement->setUser($this->getUser());
                 $signalement->setAnonymousToken($session->getId());
                 $signalement->setCreatedAt(new \DateTimeImmutable());
+                
                 $signalement->setUpdatedAt(new \DateTime());
 
                 $em->persist($signalement);
