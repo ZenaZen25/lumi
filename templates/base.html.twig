@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr"  class="scroll-smooth">
+<html lang="fr" class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,8 +41,14 @@
 		{% block header %}
 			{% include '_partials/_header.html.twig' %}
 		{% endblock %}
+		{% block cookie_banner %}
+			{% include '_partials/_cookie_banner.html.twig' %}
+
+		{% endblock %}
+
 
 		<main id="main-content" class="flex-grow"> {% block body %}{% endblock %}
+
 			</main>
 
 			{% include '_partials/_footer.html.twig' %}

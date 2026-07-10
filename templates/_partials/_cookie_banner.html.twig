@@ -1,0 +1,36 @@
+<div
+    data-controller="cookie"
+    data-cookie-target="banner"
+    class="fixed inset-0 z-[99999] bg-black/60 hidden"
+>
+    <div class="flex items-center justify-center w-full h-full p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 text-center">
+            <div class="text-4xl mb-3">🔒</div>
+
+            <h2 class="text-xl font-bold text-[#4A157D] mb-3">
+                Confidentialité & RGPD
+            </h2>
+
+            <p class="text-sm text-gray-700 leading-6">
+                Avant d’utiliser LUMI, vous devez accepter notre politique de confidentialité.
+                LUMI utilise uniquement les données nécessaires au fonctionnement de la plateforme.
+            </p>
+
+            <div class="flex gap-3 mt-6">
+                <button
+                    data-action="click->cookie#refuse"
+                    class="flex-1 border border-gray-300 py-3 rounded-xl font-semibold text-gray-700"
+                >
+                    Refuser
+                </button>
+
+                <button
+                    data-action="click->cookie#accept"
+                    class="flex-1 bg-[#A855F7] text-white py-3 rounded-xl font-bold"
+                >
+                    J'accepte
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
